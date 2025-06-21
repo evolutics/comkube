@@ -1,6 +1,4 @@
-# comkube
-
-Deploy Docker Compose apps on Kubernetes
+# Comkube: deploy Docker Compose apps on Kubernetes
 
 ## Development
 
