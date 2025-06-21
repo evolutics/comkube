@@ -3,6 +3,7 @@ name = "comkube"
 version = "0.1.0"
 edition = "2024"
 
+# Update-worthy.
 [dependencies]
 anyhow = "1"
 futures = "0"
