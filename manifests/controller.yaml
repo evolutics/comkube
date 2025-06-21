@@ -33,3 +33,6 @@ spec:
       containers:
         - name: comkube
           image: ghcr.io/evolutics/comkube
+          env:
+            - name: RUST_LOG
+              value: info,kube=debug,comkube=debug
