@@ -60,8 +60,8 @@ async fn reconcile(
 ) -> anyhow::Result<controller::Action, Error> {
     let client = &context.client;
 
-    let mut contents = collections::BTreeMap::new();
-    contents.insert("content".to_string(), generator.spec.content.clone());
+    let contents =
+        collections::BTreeMap::from([("content".to_string(), generator.spec.content.clone())]);
     let owner_reference = generator.controller_owner_ref(&()).unwrap();
     let config_map = v1::ConfigMap {
         metadata: api::ObjectMeta {
