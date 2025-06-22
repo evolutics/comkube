@@ -1,6 +1,3 @@
-// Nightly clippy (0.1.64) considers Drop a side effect, see https://github.com/rust-lang/rust-clippy/issues/9608
-#![allow(clippy::unnecessary_lazy_evaluations)]
-
 use anyhow::Result;
 use futures::StreamExt;
 use k8s_openapi::api::core::v1::ConfigMap;
