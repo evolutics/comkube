@@ -42,7 +42,6 @@ struct ConfigMapGeneratorSpec {
     content: String,
 }
 
-// Data we want access to in error/reconcile calls
 struct Context {
     client: kube::Client,
 }
@@ -55,7 +54,6 @@ enum Error {
     MissingObjectKey(&'static str),
 }
 
-/// Controller triggers this whenever our main object or our children changed
 async fn reconcile(
     generator: sync::Arc<ConfigMapGenerator>,
     context: sync::Arc<Context>,
@@ -97,7 +95,6 @@ async fn reconcile(
     Ok(controller::Action::requeue(time::Duration::from_secs(300)))
 }
 
-/// The controller triggers this on reconcile errors
 fn error_policy(
     _object: sync::Arc<ConfigMapGenerator>,
     _error: &Error,
