@@ -16,7 +16,7 @@ async fn main() -> anyhow::Result<()> {
     let config_map_generators = api::Api::<ConfigMapGenerator>::all(client.clone());
     let config_maps = api::Api::<v1::ConfigMap>::all(client.clone());
 
-    tracing::info!("starting configmapgen-controller");
+    tracing::info!("Starting controller.");
 
     controller::Controller::new(config_map_generators, watcher::Config::default())
         .owns(config_maps, watcher::Config::default())
@@ -24,12 +24,12 @@ async fn main() -> anyhow::Result<()> {
         .run(reconcile, error_policy, sync::Arc::new(Context { client }))
         .for_each(|result| async move {
             match result {
-                Ok(object_reference) => tracing::info!("reconciled {:?}", object_reference),
-                Err(error) => tracing::warn!("reconcile failed: {}", error),
+                Ok(object_reference) => tracing::info!("Reconciled: {object_reference:?}"),
+                Err(error) => tracing::warn!("Reconcile failed: {error}"),
             }
         })
         .await;
-    tracing::info!("controller terminated");
+    tracing::info!("Controller terminated.");
     Ok(())
 }
 
