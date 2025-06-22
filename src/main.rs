@@ -113,7 +113,7 @@ fn error_policy(
 }
 
 fn convert_with_kompose(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
-    let mut child = process::Command::new("./kompose")
+    let mut child = process::Command::new("kompose")
         .args(["--file", "-", "convert", "--stdout"])
         .stdin(process::Stdio::piped())
         .stdout(process::Stdio::piped())

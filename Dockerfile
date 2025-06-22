@@ -1,5 +1,6 @@
 FROM scratch
 
+ENV PATH=/
 # Update-worthy.
 ADD --chmod=555 \
   https://github.com/kubernetes/kompose/releases/download/v1.36.0/kompose-linux-amd64 \
