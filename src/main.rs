@@ -1,15 +1,11 @@
 use futures::StreamExt;
-use futures::channel::mpsc;
 use k8s_openapi::api::core::v1;
 use kube::api;
 use kube::api::Resource;
 use kube::runtime::controller;
 use kube::runtime::watcher;
 use std::collections;
-use std::io;
-use std::io::BufRead;
 use std::sync;
-use std::thread;
 use tokio::time;
 
 #[derive(Debug, thiserror::Error)]
@@ -93,16 +89,6 @@ async fn main() -> anyhow::Result<()> {
     let cms = api::Api::<v1::ConfigMap>::all(client.clone());
 
     tracing::info!("starting configmapgen-controller");
-    tracing::info!("press <enter> to force a reconciliation of all objects");
-
-    let (mut reload_tx, reload_rx) = mpsc::channel(0);
-    // Using a regular background thread since tokio::io::stdin() doesn't allow aborting reads,
-    // and its worker prevents the Tokio runtime from shutting down.
-    thread::spawn(move || {
-        for _ in io::BufReader::new(io::stdin()).lines() {
-            let _ = reload_tx.try_send(());
-        }
-    });
 
     // limit the controller to running a maximum of two concurrent reconciliations
     let config = controller::Config::default().concurrency(2);
@@ -110,7 +96,6 @@ async fn main() -> anyhow::Result<()> {
     controller::Controller::new(cmgs, watcher::Config::default())
         .owns(cms, watcher::Config::default())
         .with_config(config)
-        .reconcile_all_on(reload_rx.map(|_| ()))
         .shutdown_on_signal()
         .run(reconcile, error_policy, sync::Arc::new(Data { client }))
         .for_each(|res| async move {
