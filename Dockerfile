@@ -10,3 +10,4 @@ ENTRYPOINT ["/comkube"]
 
 # TODO: Consider building in image.
 # TODO: Provide multi-arch image.
+# TODO: Validate integrity of Kompose executable using hash.
