@@ -18,12 +18,8 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("starting configmapgen-controller");
 
-    // limit the controller to running a maximum of two concurrent reconciliations
-    let config = controller::Config::default().concurrency(2);
-
     controller::Controller::new(config_map_generators, watcher::Config::default())
         .owns(config_maps, watcher::Config::default())
-        .with_config(config)
         .shutdown_on_signal()
         .run(reconcile, error_policy, sync::Arc::new(Context { client }))
         .for_each(|result| async move {
