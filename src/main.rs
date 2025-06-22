@@ -8,12 +8,33 @@ use std::collections;
 use std::sync;
 use tokio::time;
 
-#[derive(Debug, thiserror::Error)]
-enum Error {
-    #[error("Failed to create ConfigMap: {0}")]
-    ConfigMapCreationFailed(#[source] kube::Error),
-    #[error("MissingObjectKey: {0}")]
-    MissingObjectKey(&'static str),
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt::init();
+    let client = kube::Client::try_default().await?;
+
+    let config_map_generators = api::Api::<ConfigMapGenerator>::all(client.clone());
+    let config_maps = api::Api::<v1::ConfigMap>::all(client.clone());
+
+    tracing::info!("starting configmapgen-controller");
+
+    // limit the controller to running a maximum of two concurrent reconciliations
+    let config = controller::Config::default().concurrency(2);
+
+    controller::Controller::new(config_map_generators, watcher::Config::default())
+        .owns(config_maps, watcher::Config::default())
+        .with_config(config)
+        .shutdown_on_signal()
+        .run(reconcile, error_policy, sync::Arc::new(Context { client }))
+        .for_each(|result| async move {
+            match result {
+                Ok(object_reference) => tracing::info!("reconciled {:?}", object_reference),
+                Err(error) => tracing::warn!("reconcile failed: {}", error),
+            }
+        })
+        .await;
+    tracing::info!("controller terminated");
+    Ok(())
 }
 
 #[derive(
@@ -23,6 +44,19 @@ enum Error {
 #[kube(shortname = "cmg", namespaced)]
 struct ConfigMapGeneratorSpec {
     content: String,
+}
+
+// Data we want access to in error/reconcile calls
+struct Context {
+    client: kube::Client,
+}
+
+#[derive(Debug, thiserror::Error)]
+enum Error {
+    #[error("Failed to create ConfigMap: {0}")]
+    ConfigMapCreationFailed(#[source] kube::Error),
+    #[error("MissingObjectKey: {0}")]
+    MissingObjectKey(&'static str),
 }
 
 /// Controller triggers this whenever our main object or our children changed
@@ -74,38 +108,4 @@ fn error_policy(
     _context: sync::Arc<Context>,
 ) -> controller::Action {
     controller::Action::requeue(time::Duration::from_secs(1))
-}
-
-// Data we want access to in error/reconcile calls
-struct Context {
-    client: kube::Client,
-}
-
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    tracing_subscriber::fmt::init();
-    let client = kube::Client::try_default().await?;
-
-    let config_map_generators = api::Api::<ConfigMapGenerator>::all(client.clone());
-    let config_maps = api::Api::<v1::ConfigMap>::all(client.clone());
-
-    tracing::info!("starting configmapgen-controller");
-
-    // limit the controller to running a maximum of two concurrent reconciliations
-    let config = controller::Config::default().concurrency(2);
-
-    controller::Controller::new(config_map_generators, watcher::Config::default())
-        .owns(config_maps, watcher::Config::default())
-        .with_config(config)
-        .shutdown_on_signal()
-        .run(reconcile, error_policy, sync::Arc::new(Context { client }))
-        .for_each(|result| async move {
-            match result {
-                Ok(object_reference) => tracing::info!("reconciled {:?}", object_reference),
-                Err(error) => tracing::warn!("reconcile failed: {}", error),
-            }
-        })
-        .await;
-    tracing::info!("controller terminated");
-    Ok(())
 }
