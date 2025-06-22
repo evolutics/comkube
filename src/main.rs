@@ -28,7 +28,7 @@ struct ConfigMapGeneratorSpec {
 /// Controller triggers this whenever our main object or our children changed
 async fn reconcile(
     generator: sync::Arc<ConfigMapGenerator>,
-    context: sync::Arc<Data>,
+    context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
     let client = &context.client;
 
@@ -71,13 +71,13 @@ async fn reconcile(
 fn error_policy(
     _object: sync::Arc<ConfigMapGenerator>,
     _error: &Error,
-    _context: sync::Arc<Data>,
+    _context: sync::Arc<Context>,
 ) -> controller::Action {
     controller::Action::requeue(time::Duration::from_secs(1))
 }
 
 // Data we want access to in error/reconcile calls
-struct Data {
+struct Context {
     client: kube::Client,
 }
 
@@ -98,7 +98,7 @@ async fn main() -> anyhow::Result<()> {
         .owns(config_maps, watcher::Config::default())
         .with_config(config)
         .shutdown_on_signal()
-        .run(reconcile, error_policy, sync::Arc::new(Data { client }))
+        .run(reconcile, error_policy, sync::Arc::new(Context { client }))
         .for_each(|result| async move {
             match result {
                 Ok(object_reference) => tracing::info!("reconciled {:?}", object_reference),
