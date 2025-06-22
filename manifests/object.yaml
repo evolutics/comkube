@@ -3,7 +3,7 @@ kind: ComposeApp
 metadata:
   name: foo
 spec:
-  content: |
+  content:
     name: example
     services:
       greet:

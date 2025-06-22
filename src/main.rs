@@ -44,7 +44,7 @@ async fn main() -> anyhow::Result<()> {
 #[kube(group = "evolutics.info", version = "v1", kind = "ComposeApp")]
 #[kube(shortname = "compose", namespaced)]
 struct ComposeAppSpec {
-    content: String,
+    content: serde_json::Value,
 }
 
 struct Context {
@@ -61,7 +61,8 @@ async fn reconcile(
 ) -> anyhow::Result<controller::Action, Error> {
     // TODO: Configure owner references.
 
-    let documents = convert_with_kompose(&compose_app.spec.content).unwrap();
+    let documents =
+        convert_with_kompose(&serde_json::to_string(&compose_app.spec.content).unwrap()).unwrap();
     let document_count = documents.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 

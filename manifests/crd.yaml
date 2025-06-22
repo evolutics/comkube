@@ -21,6 +21,4 @@ spec:
           properties:
             spec:
               type: object
-              properties:
-                content:
-                  type: string
+              x-kubernetes-preserve-unknown-fields: true
