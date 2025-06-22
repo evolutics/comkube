@@ -22,13 +22,9 @@ async fn main() -> anyhow::Result<()> {
         .owns(config_maps, watcher::Config::default())
         .shutdown_on_signal()
         .run(reconcile, error_policy, sync::Arc::new(Context { client }))
-        .for_each(|result| async move {
-            match result {
-                Ok(object_reference) => tracing::info!("Reconciled: {object_reference:?}"),
-                Err(error) => tracing::warn!("Reconcile failed: {error}"),
-            }
-        })
+        .for_each(|_| futures::future::ready(()))
         .await;
+
     tracing::info!("Controller terminated.");
     Ok(())
 }
@@ -97,8 +93,9 @@ async fn reconcile(
 
 fn error_policy(
     _object: sync::Arc<ConfigMapGenerator>,
-    _error: &Error,
+    error: &Error,
     _context: sync::Arc<Context>,
 ) -> controller::Action {
+    tracing::warn!("Reconcile failed: {error}");
     controller::Action::requeue(time::Duration::from_secs(1))
 }
