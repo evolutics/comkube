@@ -17,15 +17,10 @@
       devShells.default = pkgs.mkShellNoCC {
         buildInputs =
           (with pkgs; [
-            kind
             kompose
             kuttl
           ])
           ++ [travel-kit.packages.${system}.default];
-
-        shellHook = ''
-          export KIND_EXPERIMENTAL_PROVIDER=podman;
-        '';
       };
     });
 }

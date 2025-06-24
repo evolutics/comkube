@@ -15,4 +15,6 @@ cargo clippy --all-features --all-targets -- --deny warnings
 cargo check
 cargo test
 
+tilt ci --port 0
 kubectl kuttl test
+tilt down
