@@ -5,11 +5,6 @@
 ```
 minikube start
 tilt up
-
-kubectl apply --filename=manifests/object.yaml
-kubectl describe service/greet
-minikube ssh -- \
-  curl "$(kubectl get service/greet --template='{{.spec.clusterIP}}')":8080
 ```
 
 ## TODO

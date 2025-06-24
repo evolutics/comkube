@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: >
+      minikube ssh -- curl "$(kubectl get service/greet \
+        --namespace="${NAMESPACE}" --template='{{.spec.clusterIP}}')":8080
