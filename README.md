@@ -3,7 +3,7 @@
 ## Development
 
 ```
-minikube start
+systemd-run --scope --user kind create cluster
 tilt up
 
 kubectl apply --filename=manifests/object.yaml

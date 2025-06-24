@@ -14,3 +14,5 @@ cargo clippy --all-features --all-targets -- --deny warnings
 
 cargo check
 cargo test
+
+kubectl kuttl test
