@@ -13,3 +13,4 @@ tilt up
 - Handle errors, e.g., from `unwrap`.
 - Provide Docker plugin that essentially does
   `docker compose config --format json "$@" | kubectl apply --filename -`.
+- Provide simple installation for Kubernetes admins, e.g., via Helm chart.
