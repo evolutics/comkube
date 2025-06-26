@@ -6,6 +6,7 @@ use kube::discovery;
 use kube::runtime::controller;
 use kube::runtime::watcher;
 use serde::Deserialize;
+use std::collections;
 use std::io::Write;
 use std::process;
 use std::sync;
@@ -44,7 +45,8 @@ async fn main() -> anyhow::Result<()> {
 #[kube(group = "evolutics.info", version = "v1", kind = "ComposeApplication")]
 #[kube(shortname = "composeapp", namespaced)]
 struct ComposeAppSpec {
-    content: serde_json::Value,
+    #[serde(flatten)]
+    extra: collections::HashMap<String, serde_json::Value>,
 }
 
 struct Context {
@@ -62,7 +64,7 @@ async fn reconcile(
     // TODO: Configure owner references.
 
     let documents =
-        convert_with_kompose(&serde_json::to_string(&compose_app.spec.content).unwrap()).unwrap();
+        convert_with_kompose(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
     let document_count = documents.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
