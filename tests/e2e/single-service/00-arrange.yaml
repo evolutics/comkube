@@ -1,5 +1,5 @@
 apiVersion: evolutics.info/v1
-kind: ComposeApp
+kind: ComposeApplication
 metadata:
   name: foo
 spec:

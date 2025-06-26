@@ -1,16 +1,16 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: composeapps.evolutics.info
+  name: composeapplications.evolutics.info
 spec:
   group: evolutics.info
   scope: Namespaced
   names:
-    plural: composeapps
-    singular: composeapp
-    kind: ComposeApp
+    plural: composeapplications
+    singular: composeapplication
+    kind: ComposeApplication
     shortNames:
-      - compose
+      - composeapp
   versions:
     - name: v1
       served: true

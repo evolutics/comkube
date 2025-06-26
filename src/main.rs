@@ -19,7 +19,7 @@ async fn main() -> anyhow::Result<()> {
     let client = kube::Client::try_default().await?;
     let discovery = discovery::Discovery::new(client.clone()).run().await?;
 
-    let compose_apps = api::Api::<ComposeApp>::all(client.clone());
+    let compose_apps = api::Api::<ComposeApplication>::all(client.clone());
 
     tracing::info!("Starting controller.");
 
@@ -41,8 +41,8 @@ async fn main() -> anyhow::Result<()> {
 #[derive(
     kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
 )]
-#[kube(group = "evolutics.info", version = "v1", kind = "ComposeApp")]
-#[kube(shortname = "compose", namespaced)]
+#[kube(group = "evolutics.info", version = "v1", kind = "ComposeApplication")]
+#[kube(shortname = "composeapp", namespaced)]
 struct ComposeAppSpec {
     content: serde_json::Value,
 }
@@ -56,7 +56,7 @@ struct Context {
 enum Error {}
 
 async fn reconcile(
-    compose_app: sync::Arc<ComposeApp>,
+    compose_app: sync::Arc<ComposeApplication>,
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
     // TODO: Configure owner references.
@@ -104,7 +104,7 @@ async fn reconcile(
 }
 
 fn error_policy(
-    _object: sync::Arc<ComposeApp>,
+    _object: sync::Arc<ComposeApplication>,
     error: &Error,
     _context: sync::Arc<Context>,
 ) -> controller::Action {
