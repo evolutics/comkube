@@ -2,7 +2,7 @@
 
 ## Development
 
-```
+```bash
 minikube start
 tilt up
 ```
