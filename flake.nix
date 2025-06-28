@@ -26,6 +26,7 @@
           (with pkgs; [
             kompose
             kuttl
+            nodejs
           ])
           ++ [travel-kit.packages.${system}.default];
 
