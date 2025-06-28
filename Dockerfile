@@ -1,11 +1,12 @@
 FROM scratch
 
 ENV PATH=/
-# Update-worthy.
+
+ARG kompose_version
 ADD \
   --checksum=sha256:459d86a14a2172d8384007ff296f74f3c625dde15b6c8dc971f4985891aef3a7 \
   --chmod=555 \
-  https://github.com/kubernetes/kompose/releases/download/v1.36.0/kompose-linux-amd64 \
+  "https://github.com/kubernetes/kompose/releases/download/v${kompose_version}/kompose-linux-amd64" \
   /kompose
 
 COPY target/x86_64-unknown-linux-musl/debug/comkube /

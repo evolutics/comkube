@@ -21,6 +21,10 @@
             kuttl
           ])
           ++ [travel-kit.packages.${system}.default];
+
+        shellHook = ''
+          export KOMPOSE_VERSION='${pkgs.kompose.version}';
+        '';
       };
     });
 }
