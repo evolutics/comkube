@@ -24,6 +24,7 @@
       devShells.default = pkgs.mkShellNoCC {
         buildInputs =
           (with pkgs; [
+            jq
             kompose
             kuttl
             nodejs

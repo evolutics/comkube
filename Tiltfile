@@ -1,3 +1,5 @@
+local_resource("crd", cmd="crd_generator/generate_crd.sh", deps="crd_generator")
+
 local_resource(
     "executable",
     cmd="cargo build --target=x86_64-unknown-linux-musl",
