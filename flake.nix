@@ -12,6 +12,13 @@
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
+      composeJsonSchema = "${composeSpec}/schema/compose-spec.json";
+      composeSpec = pkgs.fetchFromGitHub {
+        owner = "compose-spec";
+        repo = "compose-go";
+        rev = "v2.6.5";
+        hash = "sha256-gQKGELI+SASHGdmNTGstrcqyHokZQ64Mf8oDMBXpLMc=";
+      };
       pkgs = import nixpkgs {inherit system;};
     in {
       devShells.default = pkgs.mkShellNoCC {
@@ -23,6 +30,7 @@
           ++ [travel-kit.packages.${system}.default];
 
         shellHook = ''
+          export COMPOSE_JSON_SCHEMA='${composeJsonSchema}';
           export KOMPOSE_VERSION='${pkgs.kompose.version}';
         '';
       };
