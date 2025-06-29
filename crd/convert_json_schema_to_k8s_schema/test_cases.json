@@ -65,6 +65,7 @@
       "type": "object",
       "patternProperties": {
         "^.+$": {
+          "description": "Bar",
           "type": "string"
         }
       },
@@ -74,6 +75,7 @@
       "description": "Foo",
       "type": "object",
       "additionalProperties": {
+        "description": "Bar",
         "type": "string"
       }
     }
