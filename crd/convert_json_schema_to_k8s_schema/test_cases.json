@@ -67,6 +67,39 @@
       }
     }
   },
+  "Removes disallowed `uniqueItems`": {
+    "input": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "array",
+          "uniqueItems": false
+        },
+        "baz": {
+          "description": "Baz",
+          "type": "array",
+          "uniqueItems": true
+        }
+      }
+    },
+    "expected_output": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "array",
+          "uniqueItems": false
+        },
+        "baz": {
+          "description": "Baz",
+          "type": "array"
+        }
+      }
+    }
+  },
   "Removes disallowed `additionalProperties` next to `properties`": {
     "input": {
       "description": "Foo",

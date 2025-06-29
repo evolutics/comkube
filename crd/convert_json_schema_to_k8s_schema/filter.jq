@@ -1,6 +1,13 @@
 del(."$id")
   | del(.definitions)
   | walk(
+    if type == "object" and has("uniqueItems") and .uniqueItems == true then
+      del(.uniqueItems)
+    else
+      .
+    end
+  )
+  | walk(
     if type == "object"
         and has("deprecated") and (.deprecated | type) == "boolean" then
       del(.deprecated)
