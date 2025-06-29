@@ -1,38 +1,40 @@
 del(.definitions)
-| walk(
+  | walk(
     if type == "object"
-      and has("deprecated") and (.deprecated | type) == "boolean" then
+        and has("deprecated") and (.deprecated | type) == "boolean" then
       del(.deprecated)
     else
       .
     end
-)
-| walk(
+  )
+  | walk(
     if type == "object"
-      and has("properties") and (.properties | type) == "object"
-      and (has("patternProperties") | not)
-      and has("additionalProperties") and (.additionalProperties == false) then
+        and has("properties") and (.properties | type) == "object"
+        and (has("patternProperties") | not)
+        and has("additionalProperties")
+        and (.additionalProperties == false) then
       del(.additionalProperties)
     else
       .
     end
   )
-| walk(
+  | walk(
     if type == "object"
-      and has("patternProperties") and (.patternProperties | type) == "object"
-      and (.patternProperties | length) == 1
-      and has("additionalProperties") and (.additionalProperties == false) then
+        and has("patternProperties") and (.patternProperties | type) == "object"
+        and (.patternProperties | length) == 1
+        and has("additionalProperties")
+        and (.additionalProperties == false) then
       .additionalProperties = .patternProperties.[] | del(.patternProperties)
     else
       .
     end
   )
-| walk(
+  | walk(
     if type == "object"
-      and has("properties") and (.properties | type) == "object"
-      and has("additionalProperties") and (.additionalProperties == {}) then
+        and has("properties") and (.properties | type) == "object"
+        and has("additionalProperties") and (.additionalProperties == {}) then
       ."x-kubernetes-preserve-unknown-fields" = true
-      | del(.additionalProperties)
+        | del(.additionalProperties)
     else
       .
     end
