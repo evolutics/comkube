@@ -19,8 +19,7 @@ del(."$id")
     if type == "object"
         and has("properties") and (.properties | type) == "object"
         and (has("patternProperties") | not)
-        and has("additionalProperties")
-        and (.additionalProperties == false) then
+        and has("additionalProperties") and .additionalProperties == false then
       del(.additionalProperties)
     else
       .
@@ -30,8 +29,7 @@ del(."$id")
     if type == "object"
         and has("patternProperties") and (.patternProperties | type) == "object"
         and (.patternProperties | length) == 1
-        and has("additionalProperties")
-        and (.additionalProperties == false) then
+        and has("additionalProperties") and .additionalProperties == false then
       .additionalProperties = .patternProperties.[] | del(.patternProperties)
     else
       .
@@ -40,7 +38,7 @@ del(."$id")
   | walk(
     if type == "object"
         and has("properties") and (.properties | type) == "object"
-        and has("additionalProperties") and (.additionalProperties == {}) then
+        and has("additionalProperties") and .additionalProperties == {} then
       ."x-kubernetes-preserve-unknown-fields" = true
         | del(.additionalProperties)
     else
