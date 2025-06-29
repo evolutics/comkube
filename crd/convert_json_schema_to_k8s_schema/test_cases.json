@@ -33,7 +33,7 @@
       }
     }
   },
-  "Removes disallowed `$id`": {
+  "Removes top-level `$id`": {
     "input": {
       "$id": "id.json",
       "type": "object"
@@ -42,7 +42,7 @@
       "type": "object"
     }
   },
-  "Removes `$schema`": {
+  "Removes top-level `$schema`": {
     "input": {
       "$schema": "https://json-schema.org/draft-07/schema",
       "type": "object"
