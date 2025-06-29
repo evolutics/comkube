@@ -1,1 +1,1 @@
-.
+del(.definitions)

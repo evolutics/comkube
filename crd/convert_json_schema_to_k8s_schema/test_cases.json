@@ -33,12 +33,6 @@
           },
           "description": "Foos"
         }
-      },
-      "definitions": {
-        "foo": {
-          "description": "Foo",
-          "type": "string"
-        }
       }
     }
   }
