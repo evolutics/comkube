@@ -61,28 +61,20 @@
   },
   "Rewrites singleton `patternProperties`": {
     "input": {
-      "properties": {
-        "foos": {
-          "description": "Foos",
-          "type": "object",
-          "patternProperties": {
-            "^.+$": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
+      "description": "Foo",
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "expected_output": {
-      "properties": {
-        "foos": {
-          "description": "Foos",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
+      "description": "Foo",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
       }
     }
   }
