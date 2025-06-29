@@ -6,11 +6,11 @@
       "type": "object",
       "properties": {
         "foos": {
+          "description": "Foos",
           "type": "array",
           "items": {
             "$ref": "#/definitions/foo"
-          },
-          "description": "Foos"
+          }
         }
       },
       "definitions": {
@@ -26,12 +26,12 @@
       "type": "object",
       "properties": {
         "foos": {
+          "description": "Foos",
           "type": "array",
           "items": {
             "description": "Foo",
             "type": "string"
-          },
-          "description": "Foos"
+          }
         }
       }
     }
