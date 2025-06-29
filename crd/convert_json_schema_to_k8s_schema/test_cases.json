@@ -36,7 +36,7 @@
       }
     }
   },
-  "Rewrites singleton pattern properties": {
+  "Rewrites singleton `patternProperties`": {
     "input": {
       "properties": {
         "foos": {
