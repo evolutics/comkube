@@ -5,13 +5,14 @@ set -o errexit -o nounset -o pipefail
 main() {
   cd -- "$(dirname -- "$0")"
 
-  readarray test_cases < <(jq --compact-output '.[]' <test_cases.json)
+  readarray test_cases \
+    < <(jq --compact-output 'to_entries | .[]' <test_cases.json)
   local status=0
 
   for test_case in "${test_cases[@]}"; do
-    summary="$(echo "${test_case}" | jq '.summary')"
-    input="$(echo "${test_case}" | jq '.input')"
-    expected_output="$(echo "${test_case}" | jq '.expected_output')"
+    summary="$(echo "${test_case}" | jq '.key')"
+    input="$(echo "${test_case}" | jq '.value.input')"
+    expected_output="$(echo "${test_case}" | jq '.value.expected_output')"
 
     actual_output="$(./main.sh <<<"${input}")"
 
