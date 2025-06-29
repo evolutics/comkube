@@ -1,4 +1,5 @@
 del(."$id")
+  | del(.["$schema"])
   | del(.definitions)
   | walk(
     if type == "object" and .uniqueItems? == true then

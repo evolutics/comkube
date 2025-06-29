@@ -20,7 +20,6 @@
       }
     },
     "expected_output": {
-      "$schema": "https://json-schema.org/draft-07/schema",
       "type": "object",
       "properties": {
         "foos": {
@@ -37,6 +36,15 @@
   "Removes disallowed `$id`": {
     "input": {
       "$id": "id.json",
+      "type": "object"
+    },
+    "expected_output": {
+      "type": "object"
+    }
+  },
+  "Removes `$schema`": {
+    "input": {
+      "$schema": "https://json-schema.org/draft-07/schema",
       "type": "object"
     },
     "expected_output": {
