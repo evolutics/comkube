@@ -51,3 +51,11 @@ del(."$id")
       .
     end
   )
+  | walk(
+    if type == "object" and (.type? | type) == "array"
+        and (.type | sort) == ["integer", "string"] then
+      ."x-kubernetes-int-or-string" = true | del(.type)
+    else
+      .
+    end
+  )

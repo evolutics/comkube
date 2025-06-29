@@ -240,5 +240,35 @@
         }
       ]
     }
+  },
+  "Rewrites type using `x-kubernetes-int-or-string`": {
+    "input": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": ["integer", "string"]
+        },
+        "baz": {
+          "description": "Baz",
+          "type": ["string", "integer"]
+        }
+      }
+    },
+    "expected_output": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "x-kubernetes-int-or-string": true
+        },
+        "baz": {
+          "description": "Baz",
+          "x-kubernetes-int-or-string": true
+        }
+      }
+    }
   }
 }
