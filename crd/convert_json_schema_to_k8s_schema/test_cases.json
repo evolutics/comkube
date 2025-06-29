@@ -127,20 +127,50 @@
     "input": {
       "description": "Foo",
       "type": "object",
-      "patternProperties": {
-        "^.+$": {
-          "description": "Bar",
-          "type": "string"
+      "properties": {
+        "bar": {
+          "description": "Bars",
+          "type": "object",
+          "patternProperties": {
+            "^.+$": {
+              "description": "Bar",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "baz": {
+          "description": "Bazes",
+          "type": "object",
+          "patternProperties": {
+            "^.+$": {
+              "description": "Baz",
+              "type": "string"
+            }
+          }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "expected_output": {
       "description": "Foo",
       "type": "object",
-      "additionalProperties": {
-        "description": "Bar",
-        "type": "string"
+      "properties": {
+        "bar": {
+          "description": "Bars",
+          "type": "object",
+          "additionalProperties": {
+            "description": "Bar",
+            "type": "string"
+          }
+        },
+        "baz": {
+          "description": "Bazes",
+          "type": "object",
+          "additionalProperties": {
+            "description": "Baz",
+            "type": "string"
+          }
+        }
       }
     }
   },

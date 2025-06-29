@@ -29,7 +29,8 @@ del(."$id")
     if type == "object"
         and has("patternProperties") and (.patternProperties | type) == "object"
         and (.patternProperties | length) == 1
-        and has("additionalProperties") and .additionalProperties == false then
+        and ((has("additionalProperties") | not)
+        or .additionalProperties == false) then
       .additionalProperties = .patternProperties.[] | del(.patternProperties)
     else
       .
