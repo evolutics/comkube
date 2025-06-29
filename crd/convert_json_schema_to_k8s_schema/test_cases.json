@@ -36,6 +36,30 @@
       }
     }
   },
+  "Removes disallowed `deprecated`": {
+    "input": {
+      "description": "Foo",
+      "type": "object",
+      "deprecated": false,
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string",
+          "deprecated": true
+        }
+      }
+    },
+    "expected_output": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string"
+        }
+      }
+    }
+  },
   "Removes disallowed `additionalProperties` next to `properties`": {
     "input": {
       "description": "Foo",
