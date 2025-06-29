@@ -19,3 +19,13 @@ del(.definitions)
       .
     end
   )
+| walk(
+    if type == "object"
+      and has("properties") and (.properties | type) == "object"
+      and has("additionalProperties") and (.additionalProperties == {}) then
+      ."x-kubernetes-preserve-unknown-fields" = true
+      | del(.additionalProperties)
+    else
+      .
+    end
+  )

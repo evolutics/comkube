@@ -79,5 +79,30 @@
         "type": "string"
       }
     }
+  },
+  "Rewrites wild card `patternProperties`": {
+    "input": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string"
+        }
+      },
+      "patternProperties": { "^x-": {} },
+      "additionalProperties": false
+    },
+    "expected_output": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string"
+        }
+      },
+      "x-kubernetes-preserve-unknown-fields": true
+    }
   }
 }
