@@ -35,5 +35,32 @@
         }
       }
     }
+  },
+  "Rewrites singleton pattern properties": {
+    "input": {
+      "properties": {
+        "foos": {
+          "description": "Description",
+          "type": "object",
+          "patternProperties": {
+            "^.+$": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "expected_output": {
+      "properties": {
+        "foos": {
+          "description": "Description",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
