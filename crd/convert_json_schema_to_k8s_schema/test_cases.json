@@ -36,6 +36,29 @@
       }
     }
   },
+  "Removes disallowed `additionalProperties` next to `properties`": {
+    "input": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "expected_output": {
+      "description": "Foo",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "Bar",
+          "type": "string"
+        }
+      }
+    }
+  },
   "Rewrites singleton `patternProperties`": {
     "input": {
       "properties": {
