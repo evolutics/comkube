@@ -1,6 +1,5 @@
-[
-  {
-    "summary": "Inlines references",
+{
+  "Inlines references": {
     "input": {
       "$id": "id.json",
       "$schema": "https://json-schema.org/draft-07/schema",
@@ -43,4 +42,4 @@
       }
     }
   }
-]
+}
