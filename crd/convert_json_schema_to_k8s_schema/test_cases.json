@@ -40,7 +40,7 @@
     "input": {
       "properties": {
         "foos": {
-          "description": "Description",
+          "description": "Foos",
           "type": "object",
           "patternProperties": {
             "^.+$": {
@@ -54,7 +54,7 @@
     "expected_output": {
       "properties": {
         "foos": {
-          "description": "Description",
+          "description": "Foos",
           "type": "object",
           "additionalProperties": {
             "type": "string"
