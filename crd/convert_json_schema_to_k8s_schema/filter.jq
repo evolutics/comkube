@@ -1,4 +1,5 @@
-del(.definitions)
+del(."$id")
+  | del(.definitions)
   | walk(
     if type == "object"
         and has("deprecated") and (.deprecated | type) == "boolean" then
