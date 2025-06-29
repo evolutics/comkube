@@ -1,0 +1,46 @@
+[
+  {
+    "summary": "Inlines references",
+    "input": {
+      "$id": "id.json",
+      "$schema": "https://json-schema.org/draft-07/schema",
+      "type": "object",
+      "properties": {
+        "foos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/foo"
+          },
+          "description": "Foos"
+        }
+      },
+      "definitions": {
+        "foo": {
+          "description": "Foo",
+          "type": "string"
+        }
+      }
+    },
+    "expected_output": {
+      "$id": "id.json",
+      "$schema": "https://json-schema.org/draft-07/schema",
+      "type": "object",
+      "properties": {
+        "foos": {
+          "type": "array",
+          "items": {
+            "description": "Foo",
+            "type": "string"
+          },
+          "description": "Foos"
+        }
+      },
+      "definitions": {
+        "foo": {
+          "description": "Foo",
+          "type": "string"
+        }
+      }
+    }
+  }
+]
