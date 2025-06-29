@@ -41,3 +41,12 @@ del(."$id")
       .
     end
   )
+  | walk(
+    if type == "object" and (.oneOf? | type) == "array"
+        and any(.oneOf[]; .type? == "null") then
+      .oneOf |= map(. + { "nullable": true })
+        | del(.oneOf[] | select(.type? == "null"))
+    else
+      .
+    end
+  )

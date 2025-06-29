@@ -198,5 +198,39 @@
       },
       "x-kubernetes-preserve-unknown-fields": true
     }
+  },
+  "Rewrites `oneOf` with null subschema": {
+    "input": {
+      "description": "Foo",
+      "oneOf": [
+        {
+          "description": "Bar",
+          "type": "null"
+        },
+        {
+          "description": "Baz",
+          "type": "string"
+        },
+        {
+          "description": "Qux",
+          "type": "integer"
+        }
+      ]
+    },
+    "expected_output": {
+      "description": "Foo",
+      "oneOf": [
+        {
+          "description": "Baz",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "description": "Qux",
+          "type": "integer",
+          "nullable": true
+        }
+      ]
+    }
   }
 }
