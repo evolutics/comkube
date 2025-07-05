@@ -11,7 +11,8 @@
       "plural": "composeapplications",
       "singular": "composeapplication",
       "kind": "ComposeApplication",
-      "shortNames": ["composeapp"]
+      "shortNames": ["composeapp"],
+      "categories": ["all"]
     },
     "versions": [
       {
