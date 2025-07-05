@@ -13,5 +13,5 @@ docker_build(
 )
 
 k8s_yaml("manifests/controller.yaml")
-k8s_yaml("manifests/crd.yaml")
+k8s_yaml("manifests/crd.json")
 k8s_resource("comkube")
