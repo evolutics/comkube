@@ -1,3 +1,22 @@
+def dereference_references:
+  if any(.. | objects; has("$ref")) then
+    . as $root | walk(
+      if type == "object" and has("$ref") then
+        ."$ref" as $reference | if $reference | startswith("#/") then
+          ($root | getpath($reference | ltrimstr("#/") | split("/")))
+            + del(."$ref")
+        else
+          error("Reference has unexpected format: \($reference)")
+        end
+      else
+        .
+      end
+    )
+    | dereference_references
+  else
+    .
+  end;
+
 def drop_restricted_fields:
   del(."$id")
     | del(."$schema")
@@ -113,7 +132,8 @@ def overapproximate_unsupported_schemas:
       end
     );
 
-drop_restricted_fields
+dereference_references
+  | drop_restricted_fields
   | rewrite_type_arrays
   | overapproximate_int_or_string
   | overapproximate_singleton_pattern_properties
