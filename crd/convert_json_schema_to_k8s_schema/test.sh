@@ -2,9 +2,7 @@
 
 set -o errexit -o nounset -o pipefail
 
-main() {
-  cd -- "$(dirname -- "$0")"
-
+test_cases() {
   readarray test_cases \
     < <(jq --compact-output 'to_entries | .[]' <test_cases.json)
   local status=0
@@ -23,6 +21,19 @@ main() {
   done
 
   return "${status}"
+}
+
+test_idempotence() {
+  local -r k8s_schema="$(./main.sh <"${COMPOSE_JSON_SCHEMA}")"
+  diff --label 'Idempotence: one application' --label 'Two applications' \
+    --unified <(echo "${k8s_schema}") <(echo "${k8s_schema}" | ./main.sh)
+}
+
+main() {
+  cd -- "$(dirname -- "$0")"
+
+  test_cases
+  test_idempotence
 }
 
 main "$@"
