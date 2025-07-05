@@ -1,4 +1,4 @@
-local_resource("crd", cmd="crd_generator/generate_crd.sh", deps="crd_generator")
+local_resource("crd", cmd="crd/generate_crd/main.sh >manifests/crd.json", deps="crd")
 
 local_resource(
     "executable",
