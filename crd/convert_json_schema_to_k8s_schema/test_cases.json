@@ -2,34 +2,47 @@
   "Inlines references": {
     "input": {
       "$schema": "https://json-schema.org/draft-07/schema",
+      "description": "Foo",
       "type": "object",
       "properties": {
-        "foos": {
-          "description": "Foos",
+        "bar": { "$ref": "#/definitions/bar" },
+        "bars": {
+          "description": "Bars",
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/foo"
-          }
-        }
+          "items": { "$ref": "#/definitions/bar" }
+        },
+        "baz": { "$ref": "#/definitions/baz" },
+        "qux": { "$ref": "#/definitions/qux" },
+        "quux": { "$ref": "#/definitions/qux", "description": "Foo" }
       },
       "definitions": {
-        "foo": {
-          "description": "Foo",
-          "type": "string"
-        }
+        "bar": { "description": "Bar", "type": "boolean" },
+        "baz": {
+          "description": "Baz",
+          "type": "object",
+          "properties": { "qux": { "$ref": "#/definitions/qux" } }
+        },
+        "qux": { "$ref": "#/definitions/quux" },
+        "quux": { "description": "Quux", "type": "number" }
       }
     },
     "expected_output": {
+      "description": "Foo",
       "type": "object",
       "properties": {
-        "foos": {
-          "description": "Foos",
+        "bar": { "description": "Bar", "type": "boolean" },
+        "bars": {
+          "description": "Bars",
           "type": "array",
-          "items": {
-            "description": "Foo",
-            "type": "string"
-          }
-        }
+          "items": { "description": "Bar", "type": "boolean" }
+        },
+        "baz": {
+          "description": "Baz",
+          "type": "object",
+          "properties": { "qux": { "description": "Quux", "type": "number" } }
+        },
+        "qux": { "description": "Quux", "type": "number" },
+        "quux": { "description": "Foo", "type": "number" }
       }
     }
   },
