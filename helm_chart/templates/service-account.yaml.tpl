@@ -11,6 +11,6 @@
     )
     "automountServiceAccountToken" .Values.serviceAccount.automount
   )
-  dict
+  nil
 ) | toYaml
 }}
