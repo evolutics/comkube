@@ -17,4 +17,4 @@ docker_build(
 )
 
 k8s_yaml(helm("helm_chart"))
-k8s_resource("comkube")
+k8s_resource("chart-comkube")

@@ -1,0 +1,39 @@
+# TODO: Provide `values.schema.json`.
+
+# Deployment.
+
+extraDeploymentLabels: {}
+deploymentAnnotations: {}
+
+replicas: 1
+
+# Pod.
+
+extraPodLabels: {}
+podAnnotations: {}
+
+affinity: {}
+imagePullSecrets: []
+nodeSelector: {}
+podSecurityContext: {}
+tolerations: []
+
+# Container.
+
+resources: {}
+securityContext: {}
+
+image:
+  repository: ghcr.io/evolutics/comkube
+  pullPolicy: IfNotPresent
+
+# Service account.
+
+serviceAccount:
+  create: true
+
+  name: ""
+  extraLabels: {}
+  annotations: {}
+
+  automount: true
