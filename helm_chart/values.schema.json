@@ -25,6 +25,13 @@
       }
     },
 
+    "rbac": {
+      "type": "object",
+      "properties": {
+        "create": { "type": "boolean" }
+      }
+    },
+
     "serviceAccount": {
       "type": "object",
       "properties": {

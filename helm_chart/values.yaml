@@ -27,6 +27,11 @@ image:
   repository: ghcr.io/evolutics/comkube
   pullPolicy: IfNotPresent
 
+# Role-based access control (RBAC).
+
+rbac:
+  create: true
+
 # Service account.
 
 serviceAccount:
