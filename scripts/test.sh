@@ -18,5 +18,12 @@ cargo test
 crd/convert_json_schema_to_k8s_schema/test.sh
 
 tilt ci --port 0
+
+(
+  cd helm_chart
+  helm lint --strict
+)
+
 kubectl kuttl test
+
 tilt down

@@ -26,6 +26,7 @@
           (with pkgs; [
             jq
             kompose
+            kubernetes-helm
             kuttl
           ])
           ++ [travel-kit.packages.${system}.default];

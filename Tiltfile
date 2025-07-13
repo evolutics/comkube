@@ -1,4 +1,8 @@
-local_resource("crd", cmd="crd/generate_crd/main.sh >manifests/crd.json", deps="crd")
+local_resource(
+    "crd",
+    cmd="crd/generate_crd/main.sh >helm_chart/crds/compose-app.json",
+    deps="crd",
+)
 
 local_resource(
     "executable",
@@ -12,6 +16,5 @@ docker_build(
     build_args={"kompose_version": os.getenv("KOMPOSE_VERSION")},
 )
 
-k8s_yaml("manifests/controller.yaml")
-k8s_yaml("manifests/crd.json")
+k8s_yaml(helm("helm_chart"))
 k8s_resource("comkube")
