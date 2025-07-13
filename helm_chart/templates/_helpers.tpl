@@ -13,7 +13,7 @@
   .Values.serviceAccount.name
 -}}
 {{- $standardLabels := merge
-  $selectorLabels
+  (deepCopy $selectorLabels)
   (dict
     "helm.sh/chart" (printf "%v-%v" .Chart.Name .Chart.Version)
     "app.kubernetes.io/version" .Chart.AppVersion

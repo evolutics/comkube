@@ -6,7 +6,10 @@
   "kind" "Deployment"
   "metadata" (dict
     "name" .helpers.fullName
-    "labels" (merge .helpers.standardLabels .Values.extraDeploymentLabels)
+    "labels" (merge
+      (deepCopy .helpers.standardLabels)
+      (deepCopy .Values.extraDeploymentLabels)
+    )
     "annotations" .Values.deploymentAnnotations
   )
   "spec" (dict
@@ -16,7 +19,10 @@
     )
     "template" (dict
       "metadata" (dict
-        "labels" (merge .helpers.standardLabels .Values.extraPodLabels)
+        "labels" (merge
+          (deepCopy .helpers.standardLabels)
+          (deepCopy .Values.extraPodLabels)
+        )
         "annotations" .Values.podAnnotations
       )
       "spec" (dict

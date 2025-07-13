@@ -6,7 +6,10 @@
     "kind" "ServiceAccount"
     "metadata" (dict
       "name" .helpers.serviceAccountName
-      "labels" (merge .helpers.standardLabels .Values.serviceAccount.extraLabels)
+      "labels" (merge
+        (deepCopy .helpers.standardLabels)
+        (deepCopy .Values.serviceAccount.extraLabels)
+      )
       "annotations" .Values.serviceAccount.annotations
     )
     "automountServiceAccountToken" .Values.serviceAccount.automount
