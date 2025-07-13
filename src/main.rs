@@ -39,6 +39,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
+// TODO: Use schema from Compose spec instead.
 #[derive(
     kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
 )]
