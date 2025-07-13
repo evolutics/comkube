@@ -1,3 +1,4 @@
+# Update-worthy: `flake.lock` file.
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
@@ -16,7 +17,7 @@
       composeSpec = pkgs.fetchFromGitHub {
         owner = "compose-spec";
         repo = "compose-go";
-        rev = "v2.6.5";
+        rev = "v2.6.5"; # Update-worthy.
         hash = "sha256-gQKGELI+SASHGdmNTGstrcqyHokZQ64Mf8oDMBXpLMc=";
       };
       pkgs = import nixpkgs {inherit system;};
