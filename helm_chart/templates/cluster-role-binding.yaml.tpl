@@ -1,6 +1,5 @@
 {{ include "comkube" . }}
 {{/* TODO: Support custom labels, annotations. */}}
-{{/* TODO: Use fine-grained role instead. */}}
 {{/* TODO: Use user namespace if service account not managed. */}}
 {{
 (.Values.rbac.create | ternary
@@ -20,7 +19,7 @@
     )
     "roleRef" (dict
       "kind" "ClusterRole"
-      "name" "cluster-admin"
+      "name" .helpers.fullName
       "apiGroup" "rbac.authorization.k8s.io"
     )
   )
