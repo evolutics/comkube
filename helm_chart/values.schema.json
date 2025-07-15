@@ -38,8 +38,7 @@
         "create": { "type": "boolean" },
         "name": { "type": "string" },
         "extraLabels": { "type": "object" },
-        "annotations": { "type": "object" },
-        "automount": { "type": "boolean" }
+        "annotations": { "type": "object" }
       }
     }
   }

@@ -12,7 +12,7 @@
       )
       "annotations" .Values.serviceAccount.annotations
     )
-    "automountServiceAccountToken" .Values.serviceAccount.automount
+    "automountServiceAccountToken" true
   )
   nil
 ) | toYaml

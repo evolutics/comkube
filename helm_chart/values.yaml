@@ -40,5 +40,3 @@ serviceAccount:
   name: ""
   extraLabels: {}
   annotations: {}
-
-  automount: true
