@@ -1,4 +1,5 @@
 {{ include "comkube" . }}
+{{/* TODO: Consider parametrizing log level. */}}
 {{/* TODO: Consider using readiness probe. */}}
 {{
 (dict

@@ -63,6 +63,7 @@ async fn reconcile(
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
     // TODO: Configure owner references.
+    // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
 
     let documents =
         convert_with_kompose(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
