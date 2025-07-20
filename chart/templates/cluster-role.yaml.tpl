@@ -1,6 +1,6 @@
 {{ include "comkube" . }}
 {{/* TODO: Support custom labels, annotations. */}}
-{{ $editVerbs := list "create" "delete" "get" "list" "patch" "watch" }}
+{{ $editVerbs := list "create" "delete" "list" "patch" "watch" }}
 {{
 (.Values.rbac.create | ternary
   (dict
