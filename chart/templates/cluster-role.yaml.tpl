@@ -1,7 +1,7 @@
 {{ include "comkube" . }}
 {{/* TODO: Support custom labels, annotations. */}}
 {{ $editVerbs := list "create" "delete" "list" "patch" "watch" }}
-{{ (.Values.rbac.create | ternary
+{{ toYaml (.Values.rbac.create | ternary
   (dict
     "apiVersion" "rbac.authorization.k8s.io/v1"
     "kind" "ClusterRole"
@@ -63,4 +63,4 @@
     )
   )
   nil
-) | toYaml }}
+) }}

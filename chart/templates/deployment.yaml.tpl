@@ -1,7 +1,7 @@
 {{ include "comkube" . }}
 {{/* TODO: Consider parametrizing log level. */}}
 {{/* TODO: Consider using readiness probe. */}}
-{{ (dict
+{{ toYaml (dict
   "apiVersion" "apps/v1"
   "kind" "Deployment"
   "metadata" (dict
@@ -50,4 +50,4 @@
       )
     )
   )
-) | toYaml }}
+) }}

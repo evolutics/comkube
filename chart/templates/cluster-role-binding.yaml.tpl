@@ -1,7 +1,7 @@
 {{ include "comkube" . }}
 {{/* TODO: Support custom labels, annotations. */}}
 {{/* TODO: Use user namespace if service account not managed. */}}
-{{ (.Values.rbac.create | ternary
+{{ toYaml (.Values.rbac.create | ternary
   (dict
     "apiVersion" "rbac.authorization.k8s.io/v1"
     "kind" "ClusterRoleBinding"
@@ -23,4 +23,4 @@
     )
   )
   nil
-) | toYaml }}
+) }}
