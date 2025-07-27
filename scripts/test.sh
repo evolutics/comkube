@@ -19,10 +19,7 @@ crd/convert_json_schema_to_k8s_schema/test.sh
 
 tilt ci --port 0
 
-(
-  cd chart
-  helm lint --strict
-)
+helm lint --strict chart
 
 kubectl kuttl test
 
