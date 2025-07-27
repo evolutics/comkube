@@ -1,6 +1,5 @@
 {{ include "comkube" . }}
-{{
-(.Values.serviceAccount.create | ternary
+{{ (.Values.serviceAccount.create | ternary
   (dict
     "apiVersion" "v1"
     "kind" "ServiceAccount"
@@ -15,5 +14,4 @@
     "automountServiceAccountToken" true
   )
   nil
-) | toYaml
-}}
+) | toYaml }}
