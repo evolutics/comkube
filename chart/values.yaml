@@ -34,7 +34,7 @@ image:
 
 env:
   - name: RUST_LOG
-    value: "info,kube=debug,comkube=trace"
+    value: info
 
 # Role-based access control (RBAC).
 
