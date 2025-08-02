@@ -31,7 +31,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "create": { "type": "boolean" }
+        "create": { "type": "boolean" },
+        "extraClusterRoleLabels": { "type": "object" },
+        "clusterRoleAnnotations": { "type": "object" },
+        "extraClusterRoleBindingLabels": { "type": "object" },
+        "clusterRoleBindingAnnotations": { "type": "object" }
       }
     },
 

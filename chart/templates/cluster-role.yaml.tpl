@@ -1,5 +1,4 @@
 {{ include "comkube" . }}
-{{/* TODO: Support custom labels, annotations. */}}
 {{ $editVerbs := list "create" "delete" "list" "patch" "watch" }}
 {{ toYaml (.Values.rbac.create | ternary
   (dict
@@ -7,7 +6,11 @@
     "kind" "ClusterRole"
     "metadata" (dict
       "name" .helpers.fullName
-      "labels" .helpers.standardLabels
+      "labels" (merge
+        (deepCopy .helpers.standardLabels)
+        (deepCopy .Values.rbac.extraClusterRoleLabels)
+      )
+      "annotations" .Values.clusterRoleAnnotations
     )
     "rules" (list
       (dict

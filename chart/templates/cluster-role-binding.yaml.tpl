@@ -1,5 +1,4 @@
 {{ include "comkube" . }}
-{{/* TODO: Support custom labels, annotations. */}}
 {{/* TODO: Use user namespace if service account not managed. */}}
 {{ toYaml (.Values.rbac.create | ternary
   (dict
@@ -7,7 +6,11 @@
     "kind" "ClusterRoleBinding"
     "metadata" (dict
       "name" .helpers.fullName
-      "labels" .helpers.standardLabels
+      "labels" (merge
+        (deepCopy .helpers.standardLabels)
+        (deepCopy .Values.rbac.extraClusterRoleBindingLabels)
+      )
+      "annotations" .Values.clusterRoleBindingAnnotations
     )
     "subjects" (list
       (dict

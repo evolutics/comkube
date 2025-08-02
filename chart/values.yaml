@@ -34,6 +34,12 @@ image:
 rbac:
   create: true
 
+  extraClusterRoleLabels: {}
+  clusterRoleAnnotations: {}
+
+  extraClusterRoleBindingLabels: {}
+  clusterRoleBindingAnnotations: {}
+
 # Service account.
 
 serviceAccount:
