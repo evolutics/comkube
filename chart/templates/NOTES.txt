@@ -1,1 +1,1 @@
-TODO: Provide help, e.g., deploying example Compose app.
+{{- /* TODO: Provide help, e.g., deploying example Compose app. */ -}}
