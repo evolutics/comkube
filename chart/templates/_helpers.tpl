@@ -1,11 +1,15 @@
 {{ define "comkube" }}
 
-{{ $fullName := contains .Chart.Name .Release.Name | ternary
-  .Release.Name
-  (printf "%v-%v" .Release.Name .Chart.Name)
+{{ $name := default .Chart.Name .Values.nameOverride }}
+{{ $fullName := default
+  (contains $name .Release.Name | ternary
+    .Release.Name
+    (printf "%v-%v" .Release.Name $name)
+  )
+  .Values.fullNameOverride
 }}
 {{ $selectorLabels := dict
-  "app.kubernetes.io/name" .Chart.Name
+  "app.kubernetes.io/name" $name
   "app.kubernetes.io/instance" .Release.Name
 }}
 {{ $serviceAccountName := default

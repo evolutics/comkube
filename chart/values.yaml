@@ -1,6 +1,7 @@
 # NOTE: Keep this in sync with `values.schema.json`.
 
-# TODO: Consider name override.
+fullNameOverride: ""
+nameOverride: ""
 
 # Deployment.
 

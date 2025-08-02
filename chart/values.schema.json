@@ -4,6 +4,9 @@
   "additionalProperties": false,
 
   "properties": {
+    "fullNameOverride": { "type": "string" },
+    "nameOverride": { "type": "string" },
+
     "extraDeploymentLabels": { "type": "object" },
     "deploymentAnnotations": { "type": "object" },
     "replicas": { "type": "integer", "minimum": 1 },
