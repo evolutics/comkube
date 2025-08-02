@@ -7,12 +7,12 @@
     "fullNameOverride": { "type": "string" },
     "nameOverride": { "type": "string" },
 
-    "extraDeploymentLabels": { "type": "object" },
-    "deploymentAnnotations": { "type": "object" },
+    "extraDeploymentLabels": { "$ref": "#/$defs/labels" },
+    "deploymentAnnotations": { "$ref": "#/$defs/annotations" },
     "replicas": {},
 
-    "extraPodLabels": { "type": "object" },
-    "podAnnotations": { "type": "object" },
+    "extraPodLabels": { "$ref": "#/$defs/labels" },
+    "podAnnotations": { "$ref": "#/$defs/annotations" },
     "affinity": { "type": "object" },
     "imagePullSecrets": { "type": "array" },
     "nodeSelector": { "type": "object" },
@@ -35,10 +35,10 @@
       "additionalProperties": false,
       "properties": {
         "create": { "type": "boolean" },
-        "extraClusterRoleLabels": { "type": "object" },
-        "clusterRoleAnnotations": { "type": "object" },
-        "extraClusterRoleBindingLabels": { "type": "object" },
-        "clusterRoleBindingAnnotations": { "type": "object" }
+        "extraClusterRoleLabels": { "$ref": "#/$defs/labels" },
+        "clusterRoleAnnotations": { "$ref": "#/$defs/annotations" },
+        "extraClusterRoleBindingLabels": { "$ref": "#/$defs/labels" },
+        "clusterRoleBindingAnnotations": { "$ref": "#/$defs/annotations" }
       }
     },
 
@@ -48,9 +48,20 @@
       "properties": {
         "create": { "type": "boolean" },
         "name": { "type": "string" },
-        "extraLabels": { "type": "object" },
-        "annotations": { "type": "object" }
+        "extraLabels": { "$ref": "#/$defs/labels" },
+        "annotations": { "$ref": "#/$defs/annotations" }
       }
+    }
+  },
+
+  "$defs": {
+    "annotations": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
     }
   }
 }
