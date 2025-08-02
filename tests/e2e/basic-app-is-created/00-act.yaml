@@ -3,7 +3,6 @@ kind: ComposeApplication
 metadata:
   name: foo
 spec:
-  name: example
   services:
     greet:
       image: "docker.io/hashicorp/http-echo:1.0"
