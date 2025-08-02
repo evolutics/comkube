@@ -1,5 +1,4 @@
 {{ include "comkube" . }}
-{{/* TODO: Use user namespace if service account not managed. */}}
 {{ toYaml (.Values.rbac.create | ternary
   (dict
     "apiVersion" "rbac.authorization.k8s.io/v1"
