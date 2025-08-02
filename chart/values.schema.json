@@ -9,7 +9,7 @@
 
     "extraDeploymentLabels": { "type": "object" },
     "deploymentAnnotations": { "type": "object" },
-    "replicas": { "type": "integer", "minimum": 1 },
+    "replicas": {},
 
     "extraPodLabels": { "type": "object" },
     "podAnnotations": { "type": "object" },
