@@ -29,7 +29,7 @@ resources: {}
 securityContext: {}
 
 image:
-  repository: ghcr.io/evolutics/comkube
+  repository: "ghcr.io/evolutics/comkube"
   pullPolicy: IfNotPresent
 
 env:
