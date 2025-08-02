@@ -26,7 +26,6 @@
   "selectorLabels" $selectorLabels
   "serviceAccountName" $serviceAccountName
   "standardLabels" $standardLabels
-)
-}}
+) }}
 
 {{ end }}
