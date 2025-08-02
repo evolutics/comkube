@@ -29,6 +29,7 @@
         "pullPolicy": { "type": "string" }
       }
     },
+    "env": { "type": "array" },
 
     "rbac": {
       "type": "object",

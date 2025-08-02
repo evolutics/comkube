@@ -1,5 +1,4 @@
 {{ include "comkube" . }}
-{{/* TODO: Consider parametrizing log level. */}}
 {{/* TODO: Consider using readiness probe. */}}
 {{ toYaml (dict
   "apiVersion" "apps/v1"
@@ -39,12 +38,7 @@
             "imagePullPolicy" .Values.image.pullPolicy
             "resources" .Values.resources
             "securityContext" .Values.securityContext
-            "env" (list
-              (dict
-                "name" "RUST_LOG"
-                "value" "info,kube=debug,comkube=trace"
-              )
-            )
+            "env" .Values.env
           )
         )
       )

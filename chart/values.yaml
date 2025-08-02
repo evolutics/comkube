@@ -32,6 +32,10 @@ image:
   repository: ghcr.io/evolutics/comkube
   pullPolicy: IfNotPresent
 
+env:
+  - name: RUST_LOG
+    value: "info,kube=debug,comkube=trace"
+
 # Role-based access control (RBAC).
 
 rbac:
