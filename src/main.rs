@@ -1,4 +1,5 @@
 use futures::StreamExt;
+use kube::Resource;
 use kube::api;
 use kube::api::ResourceExt;
 use kube::core;
@@ -62,7 +63,6 @@ async fn reconcile(
     compose_app: sync::Arc<ComposeApplication>,
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
-    // TODO: Configure owner references.
     // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
 
     let documents =
@@ -71,7 +71,7 @@ async fn reconcile(
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
     for (index, document) in documents.into_iter().enumerate() {
-        let object = serde_yaml::from_value::<api::DynamicObject>(document).unwrap();
+        let mut object = serde_yaml::from_value::<api::DynamicObject>(document).unwrap();
         let gvk = core::GroupVersionKind::try_from(object.types.as_ref().unwrap()).unwrap();
         let namespace = object
             .metadata
@@ -88,6 +88,8 @@ async fn reconcile(
                 number = index + 1,
                 pretty_object = serde_yaml::to_string(&object).unwrap(),
             );
+            let owner_reference = compose_app.owner_ref(&()).unwrap();
+            object.owner_references_mut().push(owner_reference);
             let data = serde_json::to_value(&object).unwrap();
             let _result = api
                 .patch(&name, &server_side_apply, &api::Patch::Apply(data))
