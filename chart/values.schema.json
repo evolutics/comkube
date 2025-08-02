@@ -9,7 +9,7 @@
 
     "extraDeploymentLabels": { "$ref": "#/$defs/labels" },
     "deploymentAnnotations": { "$ref": "#/$defs/annotations" },
-    "replicas": {},
+    "replicas": { "type": ["null", "integer"] },
 
     "extraPodLabels": { "$ref": "#/$defs/labels" },
     "podAnnotations": { "$ref": "#/$defs/annotations" },
