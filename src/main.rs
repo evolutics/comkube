@@ -1,3 +1,5 @@
+mod kompose;
+
 use futures::StreamExt;
 use kube::Resource;
 use kube::api;
@@ -6,12 +8,8 @@ use kube::core;
 use kube::discovery;
 use kube::runtime::controller;
 use kube::runtime::watcher;
-use serde::Deserialize;
 use std::collections;
-use std::io::Write;
-use std::process;
 use std::sync;
-use std::thread;
 use tokio::time;
 
 #[tokio::main]
@@ -65,8 +63,7 @@ async fn reconcile(
 ) -> anyhow::Result<controller::Action, Error> {
     // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
 
-    let documents =
-        convert_with_kompose(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
+    let documents = kompose::convert(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
     let document_count = documents.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
@@ -116,32 +113,6 @@ fn error_policy(
 ) -> controller::Action {
     tracing::warn!("Reconcile failed: {error}");
     controller::Action::requeue(time::Duration::from_secs(1))
-}
-
-fn convert_with_kompose(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
-    let mut child = process::Command::new("kompose")
-        .args(["--file", "-", "convert", "--stdout"])
-        .env("COMPOSE_PROJECT_NAME", "dummy")
-        .stdin(process::Stdio::piped())
-        .stdout(process::Stdio::piped())
-        .spawn()?;
-
-    let mut stdin = child.stdin.take().unwrap();
-    thread::scope(|scope| {
-        scope.spawn(move || {
-            stdin.write_all(compose_config.as_bytes()).unwrap();
-        });
-    });
-
-    let output = child.wait_with_output()?;
-    // TODO: Check exit status.
-    // TODO: Check stderr.
-
-    let documents = serde_yaml::Deserializer::from_slice(&output.stdout)
-        .map(serde_yaml::Value::deserialize)
-        .collect::<Result<_, _>>()?;
-    Ok(documents)
-    // TODO: Consider returning JSON as this would be simpler interface.
 }
 
 fn dynamic_api(
