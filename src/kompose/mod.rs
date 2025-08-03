@@ -1,12 +1,19 @@
 use serde::Deserialize;
+use std::env;
+use std::ffi;
 use std::io::Write;
 use std::process;
 use std::thread;
 
 pub fn convert(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
-    // TODO: Consider supporting OpenShift provider.
     let mut child = process::Command::new("kompose")
-        .args(["--file", "-", "convert", "--stdout"])
+        .args(["--file", "-"])
+        .args(
+            env::var_os("COMKUBE_KOMPOSE_PROVIDER")
+                .iter()
+                .flat_map(|provider| [ffi::OsStr::new("--provider"), provider]),
+        )
+        .args(["convert", "--stdout"])
         .env("COMPOSE_PROJECT_NAME", "dummy") // TODO: Use name from Compose config, else K8s object.
         .stderr(process::Stdio::piped())
         .stdin(process::Stdio::piped())
