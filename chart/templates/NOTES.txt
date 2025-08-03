@@ -1,1 +1,28 @@
+{{ include "comkube" . }}
+
 Thanks for using Comkube.
+
+Try deploying a Compose test app with
+
+```
+kubectl apply --filename - <<'EOF'
+{{ .Files.Get "example-compose-app.yaml" -}}
+EOF
+```
+
+This should create a Kubernetes service called `greet`, backed by a deployment
+of the same name (see `kubectl get all`).
+
+For debugging, show the controller logs by running
+
+```
+kubectl logs deployment/{{ .helpers.fullName }}
+```
+
+When done testing, delete the Compose test app including its owned objects with
+
+```
+kubectl delete composeapp foo
+```
+
+See the documentation at https://github.com/evolutics/comkube for more.
