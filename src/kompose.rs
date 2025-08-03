@@ -31,7 +31,6 @@ pub fn convert(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
             .map(serde_yaml::Value::deserialize)
             .collect::<Result<_, _>>()?;
         Ok(documents)
-        // TODO: Consider returning JSON as this would be simpler interface.
     } else {
         let exit_status = output.status;
         Err(anyhow::anyhow!("Kompose failed with {exit_status}."))
