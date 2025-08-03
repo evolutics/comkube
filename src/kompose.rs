@@ -26,11 +26,14 @@ pub fn convert(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
         tracing::debug!("Kompose stderr:\n{stderr}");
     }
 
-    // TODO: Check exit status.
-
-    let documents = serde_yaml::Deserializer::from_slice(&output.stdout)
-        .map(serde_yaml::Value::deserialize)
-        .collect::<Result<_, _>>()?;
-    Ok(documents)
-    // TODO: Consider returning JSON as this would be simpler interface.
+    if output.status.success() {
+        let documents = serde_yaml::Deserializer::from_slice(&output.stdout)
+            .map(serde_yaml::Value::deserialize)
+            .collect::<Result<_, _>>()?;
+        Ok(documents)
+        // TODO: Consider returning JSON as this would be simpler interface.
+    } else {
+        let exit_status = output.status;
+        Err(anyhow::anyhow!("Kompose failed with {exit_status}."))
+    }
 }
