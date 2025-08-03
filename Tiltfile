@@ -16,5 +16,5 @@ docker_build(
     build_args={"kompose_version": os.getenv("KOMPOSE_VERSION")},
 )
 
-k8s_yaml(helm("chart", values=["scripts/dev_chart_values.yaml"]))
+k8s_yaml(helm("chart", values=["chart/dev/values.yaml"]))
 k8s_resource("chart-comkube")
