@@ -36,3 +36,20 @@ pub fn convert(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
         Err(anyhow::anyhow!("Kompose failed with {exit_status}."))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn converts() -> anyhow::Result<()> {
+        let actual = convert(include_str!("test_input.yaml"))?;
+        let expected =
+            serde_yaml::Deserializer::from_str(include_str!("test_expected_output.yaml"))
+                .map(serde_yaml::Value::deserialize)
+                .collect::<Result<Vec<_>, _>>()?;
+
+        assert_eq!(actual, expected);
+        Ok(())
+    }
+}

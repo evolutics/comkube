@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet
+  labels:
+    io.kompose.service: greet
+  annotations:
+    kompose.cmd: "kompose --file - convert --stdout"
+    kompose.version: "1.36.0 (HEAD)"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: greet
+  template:
+    metadata:
+      labels:
+        io.kompose.service: greet
+      annotations:
+        kompose.cmd: "kompose --file - convert --stdout"
+        kompose.version: "1.36.0 (HEAD)"
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: greet
+          image: "docker.io/hashicorp/http-echo:1.0"
