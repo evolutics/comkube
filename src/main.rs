@@ -63,6 +63,7 @@ async fn reconcile(
 ) -> anyhow::Result<controller::Action, Error> {
     // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
 
+    // TODO: Report Kompose errors via Compose app object instead of crashing.
     let documents = kompose::convert(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
     let document_count = documents.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
