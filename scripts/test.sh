@@ -19,7 +19,7 @@ crd/convert_json_schema_to_k8s_schema/test.sh
 
 tilt ci --port 0
 
-chart/testing/test.sh
+chart/dev/test.sh
 
 kubectl kuttl test
 
