@@ -5,7 +5,7 @@ Thanks for using Comkube.
 Try deploying a Compose test app with
 
 ```
-kubectl apply --filename - <<'EOF'
+kubectl apply --filename=- <<'EOF'
 {{ .Files.Get "example-compose-app.yaml" -}}
 EOF
 ```

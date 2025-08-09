@@ -4,7 +4,7 @@ Thanks for using Comkube.
 Try deploying a Compose test app with
 
 ```
-kubectl apply --filename - <<'EOF'
+kubectl apply --filename=- <<'EOF'
 apiVersion: evolutics.info/v1
 kind: ComposeApplication
 metadata:

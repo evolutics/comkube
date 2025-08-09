@@ -13,4 +13,4 @@ tilt up
 - Handle errors, e.g., from `unwrap`.
 - Handle updates to immutable fields where patch fails.
 - Provide Docker plugin that essentially does
-  `docker compose config --format json "$@" | kubectl apply --filename -`.
+  `docker compose config --format json "$@" | kubectl apply --filename=-`.
