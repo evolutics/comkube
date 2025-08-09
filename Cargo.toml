@@ -1,8 +1,13 @@
 [package]
 name = "comkube"
 version = "0.1.0"
-edition = "2024"                                         # Update-worthy.
+edition = "2024"                                                               # Update-worthy.
 description = "Deploy Docker Compose Apps on Kubernetes"
+homepage = "https://github.com/evolutics/comkube"
+repository = "https://github.com/evolutics/comkube"
+license = "MIT"
+keywords = ["compose", "deployment", "docker", "docker-compose", "kubernetes"]
+categories = ["virtualization"]
 
 # Update-worthy.
 [dependencies]

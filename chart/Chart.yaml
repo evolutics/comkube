@@ -3,4 +3,13 @@ name: comkube
 version: 0.1.0
 description: "Deploy Docker Compose Apps on Kubernetes"
 type: application
+
+# Keep in sync with `Cargo.toml`.
+keywords: ["compose", "deployment", "docker", "docker-compose", "kubernetes"]
+
+home: "https://github.com/evolutics/comkube"
+sources:
+  - "https://github.com/evolutics/comkube"
+maintainers:
+  - name: Benjamin Fischer
 appVersion: 0.1.0
