@@ -37,15 +37,13 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-// TODO: Use schema from Compose spec instead.
-#[derive(
-    kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
-)]
+#[derive(kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize)]
 #[kube(
     group = "evolutics.info",
     version = "v1",
     kind = "ComposeApplication",
     namespaced,
+    schema = "disabled",
     shortname = "composeapp"
 )]
 struct ComposeAppSpec {
