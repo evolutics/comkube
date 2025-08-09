@@ -41,8 +41,13 @@ async fn main() -> anyhow::Result<()> {
 #[derive(
     kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
 )]
-#[kube(group = "evolutics.info", version = "v1", kind = "ComposeApplication")]
-#[kube(shortname = "composeapp", namespaced)]
+#[kube(
+    group = "evolutics.info",
+    version = "v1",
+    kind = "ComposeApplication",
+    namespaced,
+    shortname = "composeapp"
+)]
 struct ComposeAppSpec {
     #[serde(flatten)]
     value: serde_json::Value,
