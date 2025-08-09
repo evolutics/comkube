@@ -1,3 +1,5 @@
+name: my-project
 services:
   greet:
     image: "docker.io/hashicorp/http-echo:1.0"
+    command: ["-text=Hi from ${COMPOSE_PROJECT_NAME}"]
