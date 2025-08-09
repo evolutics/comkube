@@ -14,7 +14,6 @@ pub fn convert(compose_config: &str) -> anyhow::Result<Vec<serde_yaml::Value>> {
                 .flat_map(|provider| [ffi::OsStr::new("--provider"), provider]),
         )
         .args(["convert", "--stdout"])
-        .env("COMPOSE_PROJECT_NAME", "dummy") // TODO: Use name from Compose config, else K8s object.
         .stderr(process::Stdio::piped())
         .stdin(process::Stdio::piped())
         .stdout(process::Stdio::piped())

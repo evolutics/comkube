@@ -24,4 +24,4 @@ spec:
       containers:
         - name: greet
           image: "docker.io/hashicorp/http-echo:1.0"
-          args: ["-text=Hi from dummy"]
+          args: ["-text=Hi from my-project"]
