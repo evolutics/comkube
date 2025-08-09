@@ -1,5 +1,4 @@
 {{ include "comkube" . }}
-{{/* TODO: Consider using readiness probe. */}}
 {{ toYaml (dict
   "apiVersion" "apps/v1"
   "kind" "Deployment"
