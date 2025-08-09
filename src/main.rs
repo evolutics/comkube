@@ -130,3 +130,26 @@ fn dynamic_api(
         api::Api::default_namespaced_with(client, &resource)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn helm_chart_metadata_matches_package() -> anyhow::Result<()> {
+        #[derive(Debug, PartialEq, serde::Deserialize)]
+        #[serde(rename_all = "camelCase")]
+        struct Chart {
+            name: String,
+            app_version: String,
+        }
+        let chart = serde_yaml::from_str::<Chart>(include_str!("../chart/Chart.yaml"))?;
+
+        assert_eq!(
+            chart,
+            Chart {
+                name: env!("CARGO_PKG_NAME").into(),
+                app_version: env!("CARGO_PKG_VERSION").into(),
+            },
+        );
+        Ok(())
+    }
+}
