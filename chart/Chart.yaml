@@ -5,4 +5,4 @@ type: application
 
 version: 0.1.0
 appVersion: 0.1.0
-# TODO: Using `Cargo.toml`, provide `description`.
+description: "Deploy Docker Compose Apps on Kubernetes"

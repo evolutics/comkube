@@ -140,6 +140,7 @@ mod tests {
         struct Chart {
             name: String,
             app_version: String,
+            description: String,
         }
         let chart = serde_yaml::from_str::<Chart>(include_str!("../chart/Chart.yaml"))?;
 
@@ -148,6 +149,7 @@ mod tests {
             Chart {
                 name: env!("CARGO_PKG_NAME").into(),
                 app_version: env!("CARGO_PKG_VERSION").into(),
+                description: env!("CARGO_PKG_DESCRIPTION").into(),
             },
         );
         Ok(())

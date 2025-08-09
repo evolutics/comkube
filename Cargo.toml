@@ -1,7 +1,8 @@
 [package]
 name = "comkube"
 version = "0.1.0"
-edition = "2024"  # Update-worthy.
+edition = "2024"                                         # Update-worthy.
+description = "Deploy Docker Compose Apps on Kubernetes"
 
 # Update-worthy.
 [dependencies]
