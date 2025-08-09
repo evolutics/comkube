@@ -8,7 +8,6 @@ use kube::core;
 use kube::discovery;
 use kube::runtime::controller;
 use kube::runtime::watcher;
-use std::collections;
 use std::sync;
 use tokio::time;
 
@@ -46,7 +45,7 @@ async fn main() -> anyhow::Result<()> {
 #[kube(shortname = "composeapp", namespaced)]
 struct ComposeAppSpec {
     #[serde(flatten)]
-    extra: collections::HashMap<String, serde_json::Value>,
+    value: serde_json::Value,
 }
 
 struct Context {
