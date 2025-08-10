@@ -17,8 +17,8 @@
       composeSpec = pkgs.fetchFromGitHub {
         owner = "compose-spec";
         repo = "compose-go";
-        rev = "v2.7.1"; # Update-worthy.
-        hash = "sha256-C3PEt2w2VQnooL+ckLcx+Yf4SzpwrXULKpsgDdlzmi0=";
+        rev = "v2.8.1"; # Update-worthy.
+        hash = "sha256-Jnr2eXsvjwMrXiX1Y8F++INL22eHnZeoNISjdxtnySg=";
       };
       pkgs = import nixpkgs {inherit system;};
     in {
