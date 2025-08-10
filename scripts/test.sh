@@ -19,7 +19,7 @@ crd/convert_json_schema_to_k8s_schema/test_idempotence.sh
 
 tilt ci --port 0
 
-scripts/test_utility_cases.py \
+scripts/test_kit.py \
   crd/convert_json_schema_to_k8s_schema/test_suite.json \
   tests/validation.json
 
