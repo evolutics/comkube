@@ -12,23 +12,24 @@ import typing
 
 def main() -> int:
     test_cases = _get_test_cases(sys.argv[1:])
-    test_cases = _shuffled_map(test_cases)
+    random.shuffle(test_cases)
 
     exit_status = 0
 
-    for identifier, test_case in test_cases.items():
+    for test_case in test_cases:
+        name = test_case.pop("name")
         error = _test(**test_case)
         if error:
-            print(f"❌ Fail: {identifier}:\n{error}")
+            print(f"❌ Fail: {name}:\n{error}")
             exit_status = 1
         else:
-            print(f"✅ Pass: {identifier}")
+            print(f"✅ Pass: {name}")
 
     return exit_status
 
 
-def _get_test_cases(test_suite_paths: list[str]) -> dict:
-    test_cases = {}
+def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
+    test_cases = []
 
     for test_suite_path in test_suite_paths:
         with open(test_suite_path, "rb") as test_suite:
@@ -36,20 +37,17 @@ def _get_test_cases(test_suite_paths: list[str]) -> dict:
         metadata = test_suite.pop("")
 
         for summary, test_case in test_suite.items():
-            test_cases[f"{test_suite_path}: {summary}"] = {
-                "command": metadata["command"],
-                "expected": test_case.get("expected"),
-                "input_": test_case.get("input"),
-                "working_folder": pathlib.Path(test_suite_path).parent,
-            }
+            test_cases.append(
+                {
+                    "name": f"{test_suite_path}: {summary}",
+                    "command": metadata["command"],
+                    "expected": test_case.get("expected"),
+                    "input_": test_case.get("input"),
+                    "working_folder": pathlib.Path(test_suite_path).parent,
+                }
+            )
 
     return test_cases
-
-
-def _shuffled_map(map_: dict) -> dict:
-    pairs = list(map_.items())
-    random.shuffle(pairs)
-    return dict(pairs)
 
 
 def _test(
