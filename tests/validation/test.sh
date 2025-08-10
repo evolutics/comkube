@@ -4,4 +4,5 @@ set -o errexit -o nounset -o pipefail
 
 cd -- "$(dirname -- "$0")"
 
-! kubectl apply --dry-run=server --filename=invalid-spec.yaml
+../../scripts/test_utility_cases.py kubectl apply --dry-run=server \
+  --filename=- <test_cases.json

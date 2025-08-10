@@ -1,489 +1,542 @@
 {
   "Inlines references": {
     "input": {
-      "$schema": "https://json-schema.org/draft-07/schema",
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": { "$ref": "#/definitions/bar" },
-        "bars": {
-          "description": "Bars",
-          "type": "array",
-          "items": { "$ref": "#/definitions/bar" }
+      "json": {
+        "$schema": "https://json-schema.org/draft-07/schema",
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": { "$ref": "#/definitions/bar" },
+          "bars": {
+            "description": "Bars",
+            "type": "array",
+            "items": { "$ref": "#/definitions/bar" }
+          },
+          "baz": { "$ref": "#/definitions/baz" },
+          "qux": { "$ref": "#/definitions/qux" },
+          "quux": { "$ref": "#/definitions/qux", "description": "Foo" }
         },
-        "baz": { "$ref": "#/definitions/baz" },
-        "qux": { "$ref": "#/definitions/qux" },
-        "quux": { "$ref": "#/definitions/qux", "description": "Foo" }
-      },
-      "definitions": {
-        "bar": { "description": "Bar", "type": "boolean" },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": { "qux": { "$ref": "#/definitions/qux" } }
-        },
-        "qux": { "$ref": "#/definitions/quux" },
-        "quux": { "description": "Quux", "type": "number" }
+        "definitions": {
+          "bar": { "description": "Bar", "type": "boolean" },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": { "qux": { "$ref": "#/definitions/qux" } }
+          },
+          "qux": { "$ref": "#/definitions/quux" },
+          "quux": { "description": "Quux", "type": "number" }
+        }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": { "description": "Bar", "type": "boolean" },
-        "bars": {
-          "description": "Bars",
-          "type": "array",
-          "items": { "description": "Bar", "type": "boolean" }
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": { "qux": { "description": "Quux", "type": "number" } }
-        },
-        "qux": { "description": "Quux", "type": "number" },
-        "quux": { "description": "Foo", "type": "number" }
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": { "description": "Bar", "type": "boolean" },
+          "bars": {
+            "description": "Bars",
+            "type": "array",
+            "items": { "description": "Bar", "type": "boolean" }
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": { "qux": { "description": "Quux", "type": "number" } }
+          },
+          "qux": { "description": "Quux", "type": "number" },
+          "quux": { "description": "Foo", "type": "number" }
+        }
       }
     }
   },
   "Drops field `$id` at root": {
-    "input": { "$id": "id.json" },
-    "expected_output": {}
+    "input": { "json": { "$id": "id.json" } },
+    "expected": { "stdout_json": {} }
   },
   "Drops field `$schema` at root": {
-    "input": { "$schema": "https://example.com" },
-    "expected_output": {}
+    "input": { "json": { "$schema": "https://example.com" } },
+    "expected": { "stdout_json": {} }
   },
   "Drops field `definitions` at root": {
-    "input": { "definitions": {} },
-    "expected_output": {}
+    "input": { "json": { "definitions": {} } },
+    "expected": { "stdout_json": {} }
   },
   "Drops field `deprecated`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "deprecated": false,
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "string",
-          "deprecated": true
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "deprecated": false,
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "string",
+            "deprecated": true
+          }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "string"
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "string"
+          }
         }
       }
     }
   },
   "Drops field `uniqueItems` if `true`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "array",
-          "uniqueItems": false
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "array",
-          "uniqueItems": true
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "array",
+            "uniqueItems": false
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "array",
+            "uniqueItems": true
+          }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "array",
-          "uniqueItems": false
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "array"
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "array",
+            "uniqueItems": false
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "array"
+          }
         }
       }
     }
   },
   "Drops field `additionalProperties` if `false`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "baz": {
-              "description": "Baz",
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": true
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "baz": {
+                "description": "Baz",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": true
+      }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "baz": {
-              "description": "Baz",
-              "type": "string"
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "baz": {
+                "description": "Baz",
+                "type": "string"
+              }
             }
           }
-        }
-      },
-      "additionalProperties": true
+        },
+        "additionalProperties": true
+      }
     }
   },
   "Rewrites type array with `null` using `nullable`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": ["string", "null"]
-        },
-        "baz": {
-          "description": "Baz",
-          "type": ["null", "boolean", "null", "null", "boolean"]
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": ["string", "null"]
+          },
+          "baz": {
+            "description": "Baz",
+            "type": ["null", "boolean", "null", "null", "boolean"]
+          }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "string",
-          "nullable": true
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "boolean",
-          "nullable": true
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "string",
+            "nullable": true
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "boolean",
+            "nullable": true
+          }
         }
       }
     }
   },
   "Rewrites singleton type array": {
     "input": {
-      "description": "Foo",
-      "type": ["string"]
+      "json": {
+        "description": "Foo",
+        "type": ["string"]
+      }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "string"
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "string"
+      }
     }
   },
   "Rewrites type array using `x-kubernetes-int-or-string`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": ["integer", "string"]
-        },
-        "baz": {
-          "description": "Baz",
-          "type": ["string", "integer"],
-          "nullable": true
-        },
-        "qux": {
-          "description": "Qux",
-          "type": ["null", "string", "integer", "null", "null"]
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": ["integer", "string"]
+          },
+          "baz": {
+            "description": "Baz",
+            "type": ["string", "integer"],
+            "nullable": true
+          },
+          "qux": {
+            "description": "Qux",
+            "type": ["null", "string", "integer", "null", "null"]
+          }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "x-kubernetes-int-or-string": true
-        },
-        "baz": {
-          "description": "Baz",
-          "nullable": true,
-          "x-kubernetes-int-or-string": true
-        },
-        "qux": {
-          "description": "Qux",
-          "nullable": true,
-          "x-kubernetes-int-or-string": true
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "x-kubernetes-int-or-string": true
+          },
+          "baz": {
+            "description": "Baz",
+            "nullable": true,
+            "x-kubernetes-int-or-string": true
+          },
+          "qux": {
+            "description": "Qux",
+            "nullable": true,
+            "x-kubernetes-int-or-string": true
+          }
         }
       }
     }
   },
   "Overapproximates `oneOf` using `x-kubernetes-int-or-string`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "oneOf": [{ "type": "string" }, { "type": "integer", "minimum": 0 }]
-        },
-        "baz": {
-          "description": "Baz",
-          "oneOf": [
-            { "type": "integer", "minimum": 1 },
-            { "type": "string", "nullable": true }
-          ]
-        },
-        "qux": {
-          "description": "Qux",
-          "oneOf": [
-            { "type": ["string", "null"] },
-            { "type": "integer", "minimum": -1 }
-          ]
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "oneOf": [{ "type": "string" }, { "type": "integer", "minimum": 0 }]
+          },
+          "baz": {
+            "description": "Baz",
+            "oneOf": [
+              { "type": "integer", "minimum": 1 },
+              { "type": "string", "nullable": true }
+            ]
+          },
+          "qux": {
+            "description": "Qux",
+            "oneOf": [
+              { "type": ["string", "null"] },
+              { "type": "integer", "minimum": -1 }
+            ]
+          }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "nullable": false,
-          "x-kubernetes-int-or-string": true
-        },
-        "baz": {
-          "description": "Baz",
-          "nullable": true,
-          "x-kubernetes-int-or-string": true
-        },
-        "qux": {
-          "description": "Qux",
-          "nullable": true,
-          "x-kubernetes-int-or-string": true
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "nullable": false,
+            "x-kubernetes-int-or-string": true
+          },
+          "baz": {
+            "description": "Baz",
+            "nullable": true,
+            "x-kubernetes-int-or-string": true
+          },
+          "qux": {
+            "description": "Qux",
+            "nullable": true,
+            "x-kubernetes-int-or-string": true
+          }
         }
       }
     }
   },
   "Overapproximates singleton `patternProperties`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "patternProperties": {
-        "^\\w+$": {
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "patternProperties": {
+          "^\\w+$": {
+            "description": "Bar",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "additionalProperties": {
           "description": "Bar",
           "type": "string"
         }
-      },
-      "additionalProperties": false
-    },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "additionalProperties": {
-        "description": "Bar",
-        "type": "string"
       }
     }
   },
   "Overapproximates unsupported schema in `additionalProperties` using `x-kubernetes-preserve-unknown-fields`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "additionalProperties": {}
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "additionalProperties": { "type": ["string", "number"] }
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "additionalProperties": {
-            "oneOf": [{ "type": "number" }, { "type": "string" }]
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "additionalProperties": { "type": ["string", "number"] }
+          },
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [{ "type": "number" }, { "type": "string" }]
+            }
           }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "x-kubernetes-preserve-unknown-fields": true
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          },
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          }
         }
       }
     }
   },
   "Overapproximates unsupported schema in `properties` using `x-kubernetes-preserve-unknown-fields`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "a": {},
-            "b": { "type": "string" },
-            "c": { "type": "integer" }
-          }
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": ["string", "number"] },
-            "c": { "type": "integer" }
-          }
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": "integer" },
-            "c": { "oneOf": [{ "type": "number" }, { "type": "string" }] }
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "a": {},
+              "b": { "type": "string" },
+              "c": { "type": "integer" }
+            }
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": ["string", "number"] },
+              "c": { "type": "integer" }
+            }
+          },
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": "integer" },
+              "c": { "oneOf": [{ "type": "number" }, { "type": "string" }] }
+            }
           }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "b": { "type": "string" },
-            "c": { "type": "integer" }
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "b": { "type": "string" },
+              "c": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
           },
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "c": { "type": "integer" }
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "c": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
           },
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": "integer" }
-          },
-          "x-kubernetes-preserve-unknown-fields": true
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
+          }
         }
       }
     }
   },
   "Overapproximates unsupported schema in array `items` using `x-kubernetes-preserve-unknown-fields`": {
     "input": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "a": { "type": "array", "items": {} },
-            "b": { "type": "string" },
-            "c": { "type": "integer" }
-          }
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": "array", "items": { "type": ["string", "number"] } },
-            "c": { "type": "integer" }
-          }
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": "integer" },
-            "c": {
-              "type": "array",
-              "items": { "oneOf": [{ "type": "number" }, { "type": "string" }] }
+      "json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "a": { "type": "array", "items": {} },
+              "b": { "type": "string" },
+              "c": { "type": "integer" }
+            }
+          },
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": {
+                "type": "array",
+                "items": { "type": ["string", "number"] }
+              },
+              "c": { "type": "integer" }
+            }
+          },
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": "integer" },
+              "c": {
+                "type": "array",
+                "items": {
+                  "oneOf": [{ "type": "number" }, { "type": "string" }]
+                }
+              }
             }
           }
         }
       }
     },
-    "expected_output": {
-      "description": "Foo",
-      "type": "object",
-      "properties": {
-        "bar": {
-          "description": "Bar",
-          "type": "object",
-          "properties": {
-            "b": { "type": "string" },
-            "c": { "type": "integer" }
+    "expected": {
+      "stdout_json": {
+        "description": "Foo",
+        "type": "object",
+        "properties": {
+          "bar": {
+            "description": "Bar",
+            "type": "object",
+            "properties": {
+              "b": { "type": "string" },
+              "c": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
           },
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "baz": {
-          "description": "Baz",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "c": { "type": "integer" }
+          "baz": {
+            "description": "Baz",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "c": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
           },
-          "x-kubernetes-preserve-unknown-fields": true
-        },
-        "qux": {
-          "description": "Qux",
-          "type": "object",
-          "properties": {
-            "a": { "type": "string" },
-            "b": { "type": "integer" }
-          },
-          "x-kubernetes-preserve-unknown-fields": true
+          "qux": {
+            "description": "Qux",
+            "type": "object",
+            "properties": {
+              "a": { "type": "string" },
+              "b": { "type": "integer" }
+            },
+            "x-kubernetes-preserve-unknown-fields": true
+          }
         }
       }
     }

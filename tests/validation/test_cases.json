@@ -1,0 +1,16 @@
+{
+  "Invalid spec": {
+    "input": {
+      "json": {
+        "apiVersion": "evolutics.info/v1",
+        "kind": "ComposeApplication",
+        "metadata": { "name": "foo" },
+        "spec": { "services": 0 }
+      }
+    },
+    "expected": {
+      "exit_status": 1,
+      "stderr_regex": ".*spec\\.services: Invalid value: \"integer\".*"
+    }
+  }
+}
