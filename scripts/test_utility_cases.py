@@ -101,7 +101,7 @@ def _diff(actual: str, expected: str) -> str:
 
 
 def _pretty_json(object_: typing.Any) -> str:
-    json.dumps(object_, sort_keys=True, indent=4)
+    return json.dumps(object_, sort_keys=True, indent=4)
 
 
 if __name__ == "__main__":
