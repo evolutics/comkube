@@ -39,7 +39,7 @@ def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
         for summary, test_case in test_suite.items():
             test_cases.append(
                 {
-                    "name": f"{test_suite_path}: {summary}",
+                    "name": f"#{len(test_cases)}: {test_suite_path}: {summary}",
                     "command": metadata["command"],
                     "expected": test_case.get("expected"),
                     "input_": test_case.get("input"),
