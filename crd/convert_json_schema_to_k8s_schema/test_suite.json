@@ -1,4 +1,7 @@
 {
+  "": {
+    "command": ["jq", "--from-file", "filter.jq"]
+  },
   "Inlines references": {
     "input": {
       "json": {

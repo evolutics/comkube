@@ -2,6 +2,7 @@
 
 import difflib
 import json
+import pathlib
 import re
 import subprocess
 import sys
@@ -9,35 +10,47 @@ import typing
 
 
 def main() -> int:
-    test_command = sys.argv[1:]
-    test_cases = json.load(sys.stdin)
+    test_suite_paths = sys.argv[1:]
 
     exit_status = 0
 
-    for summary, test_case in test_cases.items():
-        error = _test(
-            command=test_command,
-            input_=test_case.get("input"),
-            expected=test_case.get("expected"),
-        )
+    for test_suite_path in test_suite_paths:
+        with open(test_suite_path, "rb") as test_suite:
+            test_suite = json.load(test_suite)
+        metadata = test_suite.pop("")
 
-        if error:
-            print(f"❌ Fail: {summary}:\n{error}")
-            exit_status = 1
-        else:
-            print(f"✅ Pass: {summary}")
+        for summary, test_case in test_suite.items():
+            error = _test(
+                working_folder=pathlib.Path(test_suite_path).parent,
+                command=metadata["command"],
+                input_=test_case.get("input"),
+                expected=test_case.get("expected"),
+            )
+
+            if error:
+                print(f"❌ Fail: {summary}:\n{error}")
+                exit_status = 1
+            else:
+                print(f"✅ Pass: {summary}")
 
     return exit_status
 
 
-def _test(command: list[str], input_: dict | None, expected: dict | None) -> str | None:
+def _test(
+    working_folder: pathlib.Path,
+    command: list[str],
+    input_: dict | None,
+    expected: dict | None,
+) -> str | None:
     if input_ is None:
         stdin = None
     else:
         stdin = json.dumps(input_["json"])
 
     # pylint: disable-next=subprocess-run-check
-    actual = subprocess.run(command, capture_output=True, input=stdin, text=True)
+    actual = subprocess.run(
+        command, capture_output=True, cwd=working_folder, input=stdin, text=True
+    )
 
     expected_exit_status = expected.get("exit_status", 0)
     if actual.returncode != expected_exit_status:

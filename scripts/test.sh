@@ -15,12 +15,15 @@ cargo clippy --all-features --all-targets -- --deny warnings
 cargo check
 cargo test
 
-crd/convert_json_schema_to_k8s_schema/test.sh
+crd/convert_json_schema_to_k8s_schema/test_idempotence.sh
 
 tilt ci --port 0
 
+scripts/test_utility_cases.py \
+  crd/convert_json_schema_to_k8s_schema/test_suite.json \
+  tests/validation.json
+
 chart/dev/test.sh
-tests/validation/test.sh
 kubectl kuttl test
 
 tilt down

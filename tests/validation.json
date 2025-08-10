@@ -1,4 +1,7 @@
 {
+  "": {
+    "command": ["kubectl", "apply", "--dry-run=server", "--filename=-"]
+  },
   "Invalid spec": {
     "input": {
       "json": {
