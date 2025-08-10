@@ -3,6 +3,7 @@
 import difflib
 import json
 import pathlib
+import random
 import re
 import subprocess
 import sys
@@ -11,6 +12,7 @@ import typing
 
 def main() -> int:
     test_cases = _get_test_cases(sys.argv[1:])
+    test_cases = _shuffled_map(test_cases)
 
     exit_status = 0
 
@@ -42,6 +44,12 @@ def _get_test_cases(test_suite_paths: list[str]) -> dict:
             }
 
     return test_cases
+
+
+def _shuffled_map(map_: dict) -> dict:
+    pairs = list(map_.items())
+    random.shuffle(pairs)
+    return dict(pairs)
 
 
 def _test(
