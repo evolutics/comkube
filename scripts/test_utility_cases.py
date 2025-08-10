@@ -10,9 +10,23 @@ import typing
 
 
 def main() -> int:
-    test_suite_paths = sys.argv[1:]
+    test_cases = _get_test_cases(sys.argv[1:])
 
     exit_status = 0
+
+    for identifier, test_case in test_cases.items():
+        error = _test(**test_case)
+        if error:
+            print(f"❌ Fail: {identifier}:\n{error}")
+            exit_status = 1
+        else:
+            print(f"✅ Pass: {identifier}")
+
+    return exit_status
+
+
+def _get_test_cases(test_suite_paths: list[str]) -> dict:
+    test_cases = {}
 
     for test_suite_path in test_suite_paths:
         with open(test_suite_path, "rb") as test_suite:
@@ -20,21 +34,14 @@ def main() -> int:
         metadata = test_suite.pop("")
 
         for summary, test_case in test_suite.items():
-            identifier = f"{test_suite_path}: {summary}"
-            error = _test(
-                command=metadata["command"],
-                expected=test_case.get("expected"),
-                input_=test_case.get("input"),
-                working_folder=pathlib.Path(test_suite_path).parent,
-            )
+            test_cases[f"{test_suite_path}: {summary}"] = {
+                "command": metadata["command"],
+                "expected": test_case.get("expected"),
+                "input_": test_case.get("input"),
+                "working_folder": pathlib.Path(test_suite_path).parent,
+            }
 
-            if error:
-                print(f"❌ Fail: {identifier}:\n{error}")
-                exit_status = 1
-            else:
-                print(f"✅ Pass: {identifier}")
-
-    return exit_status
+    return test_cases
 
 
 def _test(
