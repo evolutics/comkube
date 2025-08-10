@@ -21,10 +21,10 @@ def main() -> int:
 
         for summary, test_case in test_suite.items():
             error = _test(
-                working_folder=pathlib.Path(test_suite_path).parent,
                 command=metadata["command"],
-                input_=test_case.get("input"),
                 expected=test_case.get("expected"),
+                input_=test_case.get("input"),
+                working_folder=pathlib.Path(test_suite_path).parent,
             )
 
             if error:
@@ -37,10 +37,10 @@ def main() -> int:
 
 
 def _test(
-    working_folder: pathlib.Path,
     command: list[str],
-    input_: dict | None,
     expected: dict | None,
+    input_: dict | None,
+    working_folder: pathlib.Path,
 ) -> str | None:
     if input_ is None:
         stdin = None
