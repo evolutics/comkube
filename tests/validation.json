@@ -2,7 +2,7 @@
   "": {
     "command": ["kubectl", "apply", "--dry-run=server", "--filename=-"]
   },
-  "Invalid spec": {
+  "Invalid spec is rejected": {
     "input": {
       "json": {
         "apiVersion": "evolutics.info/v1",
@@ -14,6 +14,23 @@
     "expected": {
       "exit_status": 1,
       "stderr_regex": ".*spec\\.services: Invalid value: \"integer\".*"
+    }
+  },
+  "Valid spec is accepted": {
+    "input": {
+      "json": {
+        "apiVersion": "evolutics.info/v1",
+        "kind": "ComposeApplication",
+        "metadata": { "name": "foo" },
+        "spec": {
+          "services": {
+            "greet": { "image": "docker.io/hashicorp/http-echo:1.0" }
+          }
+        }
+      }
+    },
+    "expected": {
+      "exit_status": 0
     }
   }
 }
