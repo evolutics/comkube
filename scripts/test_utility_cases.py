@@ -20,6 +20,7 @@ def main() -> int:
         metadata = test_suite.pop("")
 
         for summary, test_case in test_suite.items():
+            identifier = f"{test_suite_path}: {summary}"
             error = _test(
                 command=metadata["command"],
                 expected=test_case.get("expected"),
@@ -28,10 +29,10 @@ def main() -> int:
             )
 
             if error:
-                print(f"❌ Fail: {summary}:\n{error}")
+                print(f"❌ Fail: {identifier}:\n{error}")
                 exit_status = 1
             else:
-                print(f"✅ Pass: {summary}")
+                print(f"✅ Pass: {identifier}")
 
     return exit_status
 
