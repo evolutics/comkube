@@ -37,10 +37,22 @@ def main() -> int:
 
 
 @dataclasses.dataclass
+class _Expected:
+    exit_status: int = 0
+    stderr_regex: str | None = None
+    stdout_json: str | None = None
+
+
+@dataclasses.dataclass
+class _Input:
+    json: str | None = None
+
+
+@dataclasses.dataclass
 class _TestCase:
     command: list[str]
-    expected: dict | None
-    input_: dict | None
+    expected: _Expected | None
+    input_: _Input | None
     summary: str
     test_suite_path: str
     working_folder: pathlib.Path
@@ -58,8 +70,8 @@ def _get_test_cases(test_suite_paths: list[str]) -> list[_TestCase]:
             test_cases.append(
                 _TestCase(
                     command=metadata["command"],
-                    expected=test_case.get("expected"),
-                    input_=test_case.get("input"),
+                    expected=_Expected(**test_case["expected"]),
+                    input_=_Input(**test_case["input"]),
                     summary=summary,
                     test_suite_path=test_suite_path,
                     working_folder=pathlib.Path(test_suite_path).parent,
@@ -73,7 +85,7 @@ def _test(case: _TestCase) -> str | None:
     if case.input_ is None:
         stdin = None
     else:
-        stdin = json.dumps(case.input_["json"])
+        stdin = json.dumps(case.input_.json)
 
     # pylint: disable-next=subprocess-run-check
     actual = subprocess.run(
@@ -84,11 +96,11 @@ def _test(case: _TestCase) -> str | None:
         text=True,
     )
 
-    expected_exit_status = case.expected.get("exit_status", 0)
+    expected_exit_status = case.expected.exit_status
     if actual.returncode != expected_exit_status:
         return f"Exit status is {actual.returncode}, expected {expected_exit_status}."
 
-    if expected_json := case.expected.get("stdout_json"):
+    if expected_json := case.expected.stdout_json:
         try:
             actual_json = json.loads(actual.stdout)
         except json.JSONDecodeError as error:
@@ -99,7 +111,7 @@ def _test(case: _TestCase) -> str | None:
             )
             return f"Diff in stdout JSON:\n{diff}"
 
-    if expected_regex := case.expected.get("stderr_regex"):
+    if expected_regex := case.expected.stderr_regex:
         if not re.fullmatch(expected_regex, actual.stderr, flags=re.DOTALL):
             return f"Stderr does not match regex {expected_regex!r}:\n{actual.stderr}"
 
