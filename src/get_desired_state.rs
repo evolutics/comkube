@@ -4,6 +4,7 @@ use kube::api;
 use kube::api::ResourceExt;
 
 pub fn get(compose_app: &super::ComposeApplication) -> Vec<api::DynamicObject> {
+    let owner_reference = compose_app.controller_owner_ref(&()).unwrap();
     // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
 
     // TODO: Report Kompose errors via Compose app object instead of crashing.
@@ -13,10 +14,7 @@ pub fn get(compose_app: &super::ComposeApplication) -> Vec<api::DynamicObject> {
         .into_iter()
         .map(|document| {
             let mut object = serde_yaml::from_value::<api::DynamicObject>(document).unwrap();
-
-            let owner_reference = compose_app.controller_owner_ref(&()).unwrap();
-            object.owner_references_mut().push(owner_reference);
-
+            object.owner_references_mut().push(owner_reference.clone());
             object
         })
         .collect()
