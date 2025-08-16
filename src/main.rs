@@ -1,7 +1,7 @@
+mod get_desired_state;
 mod kompose;
 
 use futures::StreamExt;
-use kube::Resource;
 use kube::api;
 use kube::api::ResourceExt;
 use kube::core;
@@ -63,15 +63,11 @@ async fn reconcile(
     compose_app: sync::Arc<ComposeApplication>,
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
-    // TODO: Label owned objects with `app.kubernetes.io/managed-by=Comkube`.
-
-    // TODO: Report Kompose errors via Compose app object instead of crashing.
-    let documents = kompose::convert(&serde_json::to_string(&compose_app.spec).unwrap()).unwrap();
-    let document_count = documents.len();
+    let objects = self::get_desired_state::get(&compose_app);
+    let document_count = objects.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
-    for (index, document) in documents.into_iter().enumerate() {
-        let mut object = serde_yaml::from_value::<api::DynamicObject>(document).unwrap();
+    for (index, object) in objects.into_iter().enumerate() {
         let gvk = core::GroupVersionKind::try_from(object.types.as_ref().unwrap()).unwrap();
         let namespace = object
             .metadata
@@ -88,8 +84,6 @@ async fn reconcile(
                 number = index + 1,
                 pretty_object = serde_yaml::to_string(&object).unwrap(),
             );
-            let owner_reference = compose_app.controller_owner_ref(&()).unwrap();
-            object.owner_references_mut().push(owner_reference);
             let data = serde_json::to_value(&object).unwrap();
             let _result = api
                 .patch(&name, &server_side_apply, &api::Patch::Apply(data))
