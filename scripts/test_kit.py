@@ -51,8 +51,8 @@ class _Input:
 @dataclasses.dataclass
 class _TestCase:
     command: list[str]
-    expected: _Expected | None
-    input_: _Input | None
+    expected: _Expected
+    input_: _Input
     summary: str
     test_suite_path: str
     working_folder: pathlib.Path
