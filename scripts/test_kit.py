@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import dataclasses
 import difflib
 import json
 import pathlib
@@ -19,11 +20,12 @@ def main() -> int:
 
     test_errors = [None] * test_count
     for index in test_order:
-        test_case = test_cases[index][1]
-        test_errors[index] = _test(**test_case)
+        test_case = test_cases[index]
+        test_errors[index] = _test(test_case)
 
     for index, error in enumerate(test_errors):
-        name = test_cases[index][0]
+        test_case = test_cases[index]
+        name = f"{test_case.test_suite_path}: {test_case.summary}"
         if error:
             print(f"❌ Fail: {name}:\n{error}")
         else:
@@ -34,7 +36,17 @@ def main() -> int:
     return 0
 
 
-def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
+@dataclasses.dataclass
+class _TestCase:
+    command: list[str]
+    expected: dict | None
+    input_: dict | None
+    summary: str
+    test_suite_path: str
+    working_folder: pathlib.Path
+
+
+def _get_test_cases(test_suite_paths: list[str]) -> list[_TestCase]:
     test_cases = []
 
     for test_suite_path in test_suite_paths:
@@ -44,41 +56,39 @@ def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
 
         for summary, test_case in test_suite.items():
             test_cases.append(
-                (
-                    f"{test_suite_path}: {summary}",
-                    {
-                        "command": metadata["command"],
-                        "expected": test_case.get("expected"),
-                        "input_": test_case.get("input"),
-                        "working_folder": pathlib.Path(test_suite_path).parent,
-                    },
+                _TestCase(
+                    command=metadata["command"],
+                    expected=test_case.get("expected"),
+                    input_=test_case.get("input"),
+                    summary=summary,
+                    test_suite_path=test_suite_path,
+                    working_folder=pathlib.Path(test_suite_path).parent,
                 )
             )
 
     return test_cases
 
 
-def _test(
-    command: list[str],
-    expected: dict | None,
-    input_: dict | None,
-    working_folder: pathlib.Path,
-) -> str | None:
-    if input_ is None:
+def _test(case: _TestCase) -> str | None:
+    if case.input_ is None:
         stdin = None
     else:
-        stdin = json.dumps(input_["json"])
+        stdin = json.dumps(case.input_["json"])
 
     # pylint: disable-next=subprocess-run-check
     actual = subprocess.run(
-        command, capture_output=True, cwd=working_folder, input=stdin, text=True
+        case.command,
+        capture_output=True,
+        cwd=case.working_folder,
+        input=stdin,
+        text=True,
     )
 
-    expected_exit_status = expected.get("exit_status", 0)
+    expected_exit_status = case.expected.get("exit_status", 0)
     if actual.returncode != expected_exit_status:
         return f"Exit status is {actual.returncode}, expected {expected_exit_status}."
 
-    if expected_json := expected.get("stdout_json"):
+    if expected_json := case.expected.get("stdout_json"):
         try:
             actual_json = json.loads(actual.stdout)
         except json.JSONDecodeError as error:
@@ -89,7 +99,7 @@ def _test(
             )
             return f"Diff in stdout JSON:\n{diff}"
 
-    if expected_regex := expected.get("stderr_regex"):
+    if expected_regex := case.expected.get("stderr_regex"):
         if not re.fullmatch(expected_regex, actual.stderr, flags=re.DOTALL):
             return f"Stderr does not match regex {expected_regex!r}:\n{actual.stderr}"
 
