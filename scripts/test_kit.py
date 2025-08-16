@@ -12,20 +12,26 @@ import typing
 
 def main() -> int:
     test_cases = _get_test_cases(sys.argv[1:])
-    random.shuffle(test_cases)
+    test_count = len(test_cases)
 
-    exit_status = 0
+    test_order = list(range(test_count))
+    random.shuffle(test_order)
 
-    for test_case in test_cases:
-        name = test_case.pop("name")
-        error = _test(**test_case)
+    test_errors = [None] * test_count
+    for index in test_order:
+        test_case = test_cases[index][1]
+        test_errors[index] = _test(**test_case)
+
+    for index, error in enumerate(test_errors):
+        name = test_cases[index][0]
         if error:
             print(f"❌ Fail: {name}:\n{error}")
-            exit_status = 1
         else:
             print(f"✅ Pass: {name}")
 
-    return exit_status
+    if any(test_errors):
+        return 1
+    return 0
 
 
 def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
@@ -38,13 +44,15 @@ def _get_test_cases(test_suite_paths: list[str]) -> list[dict]:
 
         for summary, test_case in test_suite.items():
             test_cases.append(
-                {
-                    "name": f"#{len(test_cases)}: {test_suite_path}: {summary}",
-                    "command": metadata["command"],
-                    "expected": test_case.get("expected"),
-                    "input_": test_case.get("input"),
-                    "working_folder": pathlib.Path(test_suite_path).parent,
-                }
+                (
+                    f"{test_suite_path}: {summary}",
+                    {
+                        "command": metadata["command"],
+                        "expected": test_case.get("expected"),
+                        "input_": test_case.get("input"),
+                        "working_folder": pathlib.Path(test_suite_path).parent,
+                    },
+                )
             )
 
     return test_cases
