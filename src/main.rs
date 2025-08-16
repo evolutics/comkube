@@ -88,7 +88,7 @@ async fn reconcile(
                 number = index + 1,
                 pretty_object = serde_yaml::to_string(&object).unwrap(),
             );
-            let owner_reference = compose_app.owner_ref(&()).unwrap();
+            let owner_reference = compose_app.controller_owner_ref(&()).unwrap();
             object.owner_references_mut().push(owner_reference);
             let data = serde_json::to_value(&object).unwrap();
             let _result = api
