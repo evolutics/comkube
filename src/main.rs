@@ -64,10 +64,9 @@ async fn reconcile(
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
     let objects = self::get_desired_state::get(&compose_app);
-    let document_count = objects.len();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
-    for (index, object) in objects.into_iter().enumerate() {
+    for object in objects {
         let gvk = core::GroupVersionKind::try_from(object.types.as_ref().unwrap()).unwrap();
         let namespace = object
             .metadata
@@ -79,9 +78,8 @@ async fn reconcile(
         if let Some((resource, capabilities)) = context.discovery.resolve_gvk(&gvk) {
             let api = dynamic_api(resource, capabilities, context.client.clone(), namespace);
             tracing::trace!(
-                "Applying {kind}, document {number}/{document_count}:\n{pretty_object}",
+                "Applying {kind} {name}:\n{pretty_object}",
                 kind = gvk.kind,
-                number = index + 1,
                 pretty_object = serde_yaml::to_string(&object).unwrap(),
             );
             let data = serde_json::to_value(&object).unwrap();
@@ -92,7 +90,7 @@ async fn reconcile(
             tracing::info!("Applied {kind} {name}.", kind = gvk.kind);
         } else {
             tracing::warn!(
-                "Cannot apply document for unknown {group}/{version}/{kind}.",
+                "Cannot apply {name} for unknown {group}/{version}/{kind}.",
                 group = gvk.group,
                 version = gvk.version,
                 kind = gvk.kind,
