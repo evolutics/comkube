@@ -37,7 +37,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-#[derive(kube::CustomResource, Debug, Clone, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, Debug, kube::CustomResource, serde::Deserialize, serde::Serialize)]
 #[kube(
     group = "evolutics.info",
     version = "v1",
