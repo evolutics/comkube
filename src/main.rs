@@ -64,19 +64,16 @@ async fn reconcile(
     context: sync::Arc<Context>,
 ) -> anyhow::Result<controller::Action, Error> {
     let objects = self::get_desired_state::get(&compose_app);
+
+    let namespace = compose_app.namespace().unwrap();
     let server_side_apply = api::PatchParams::apply("comkube").force();
 
     for object in objects {
         let gvk = core::GroupVersionKind::try_from(object.types.as_ref().unwrap()).unwrap();
-        let namespace = object
-            .metadata
-            .namespace
-            .as_deref()
-            .or(compose_app.metadata.namespace.as_deref());
         let name = object.name_any();
 
         if let Some((resource, capabilities)) = context.discovery.resolve_gvk(&gvk) {
-            let api = dynamic_api(resource, capabilities, context.client.clone(), namespace);
+            let api = dynamic_api(resource, capabilities, context.client.clone(), &namespace);
             tracing::trace!(
                 "Applying {kind} {name}:\n{pretty_object}",
                 kind = gvk.kind,
@@ -114,14 +111,12 @@ fn dynamic_api(
     resource: discovery::ApiResource,
     capabilities: discovery::ApiCapabilities,
     client: kube::Client,
-    namespace: Option<&str>,
+    namespace: &str,
 ) -> api::Api<api::DynamicObject> {
     if capabilities.scope == discovery::Scope::Cluster {
         api::Api::all_with(client, &resource)
-    } else if let Some(namespace) = namespace {
-        api::Api::namespaced_with(client, namespace, &resource)
     } else {
-        api::Api::default_namespaced_with(client, &resource)
+        api::Api::namespaced_with(client, namespace, &resource)
     }
 }
 
