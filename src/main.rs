@@ -70,7 +70,7 @@ async fn reconcile(
 
     for object in objects {
         let gvk = core::GroupVersionKind::try_from(object.types.as_ref().unwrap()).unwrap();
-        let name = object.name_any();
+        let name = object.name_unchecked();
 
         if let Some((resource, capabilities)) = context.discovery.resolve_gvk(&gvk) {
             let api = dynamic_api(resource, capabilities, context.client.clone(), &namespace);
