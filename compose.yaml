@@ -1,0 +1,6 @@
+services:
+  greet:
+    image: "docker.io/hashicorp/http-echo:1.0"
+    command: ["-listen=:8282", "-text=Hi from Comkube"]
+    ports:
+      - "127.0.0.1:8080:8282"

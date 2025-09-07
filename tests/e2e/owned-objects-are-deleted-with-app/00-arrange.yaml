@@ -1,8 +1,0 @@
-apiVersion: evolutics.info/v1
-kind: ComposeApplication
-metadata:
-  name: foo
-spec:
-  services:
-    greet:
-      image: "docker.io/hashicorp/http-echo:1.0"

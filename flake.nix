@@ -13,27 +13,16 @@
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      composeJsonSchema = "${composeSpec}/schema/compose-spec.json";
-      composeSpec = pkgs.fetchFromGitHub {
-        owner = "compose-spec";
-        repo = "compose-go";
-        rev = "v2.8.1"; # Update-worthy.
-        hash = "sha256-Jnr2eXsvjwMrXiX1Y8F++INL22eHnZeoNISjdxtnySg=";
-      };
       pkgs = import nixpkgs {inherit system;};
     in {
       devShells.default = pkgs.mkShellNoCC {
         buildInputs =
           (with pkgs; [
-            jq
             kompose
-            kubernetes-helm
-            kuttl
           ])
           ++ [travel-kit.packages.${system}.default];
 
         shellHook = ''
-          export COMPOSE_JSON_SCHEMA='${composeJsonSchema}';
           export KOMPOSE_VERSION='${pkgs.kompose.version}';
         '';
       };
