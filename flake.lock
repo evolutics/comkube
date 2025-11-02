@@ -112,11 +112,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1749304287,
-        "narHash": "sha256-/XTvGlREczXWn3AJOzYCnks55IB67w0i4GVh8mqhcXg=",
+        "lastModified": 1762081142,
+        "narHash": "sha256-wfeYVkgmGcSKCiEIgbPr2mY5HJbVr36nyN71b5NUM2Q=",
         "owner": "evolutics",
         "repo": "travel-kit",
-        "rev": "6f8181cfa8e6f2f9fc2d1d8e4081f54c5b08fe34",
+        "rev": "9a3ed3ad271e7c7992495556394153eeccfa3e09",
         "type": "github"
       },
       "original": {
