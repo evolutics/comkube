@@ -18,6 +18,7 @@
       devShells.default = pkgs.mkShellNoCC {
         buildInputs =
           (with pkgs; [
+            go
             kompose
           ])
           ++ [travel-kit.packages.${system}.default];
