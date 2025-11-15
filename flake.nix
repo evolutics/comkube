@@ -19,6 +19,7 @@
         buildInputs =
           (with pkgs; [
             go
+            golangci-lint
             kompose
           ])
           ++ [travel-kit.packages.${system}.default];
