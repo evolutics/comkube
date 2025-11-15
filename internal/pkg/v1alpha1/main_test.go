@@ -10,6 +10,7 @@ import (
 func TestCommand(test *testing.T) {
 	checker := frameworktestutil.CommandResultsChecker{
 		Command: dispatcher.NewCommand,
+		// UpdateExpectedFromActual: true,
 	}
 	checker.Assert(test)
 }
