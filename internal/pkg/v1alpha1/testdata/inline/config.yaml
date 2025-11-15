@@ -1,0 +1,11 @@
+apiVersion: comkube.evolutics.info/v1alpha1
+kind: ComposeApp
+metadata:
+  name: my-app
+spec:
+  services:
+    greet:
+      image: "docker.io/hashicorp/http-echo:1.0"
+      command: ["-listen=:8181", "-text=Hi"]
+      ports:
+        - "127.0.0.1:8080:8181"

@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/evolutics/comkube/internal/pkg/dispatcher"
+)
 
 func main() {
-	fmt.Println("Hi")
+	if err := dispatcher.NewCommand().Execute(); err != nil {
+		log.Fatal(err)
+	}
 }
