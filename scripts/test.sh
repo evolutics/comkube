@@ -6,3 +6,4 @@ cd -- "$(dirname -- "$0")/.."
 
 travel-kit
 golangci-lint run --fix
+go test ./...
