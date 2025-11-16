@@ -1,0 +1,12 @@
+apiVersion: comkube.evolutics.info/v1alpha1
+kind: ComposeApp
+metadata:
+  name: dummy # TODO: Consider using name as default Compose project name.
+  annotations:
+    config.kubernetes.io/function: |
+      container:
+        image: ghcr.io/evolutics/comkube:dirty # TODO: Use latest.
+        mounts:
+          - type: bind
+            src: compose.yaml
+            dst: /srv/compose.yaml
