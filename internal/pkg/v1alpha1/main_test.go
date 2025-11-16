@@ -8,6 +8,7 @@ import (
 )
 
 func TestCommand(test *testing.T) {
+	// TODO: Test multiple ComposeApp manifests.
 	checker := frameworktestutil.CommandResultsChecker{
 		Command: dispatcher.NewCommand,
 		// UpdateExpectedFromActual: true,
