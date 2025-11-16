@@ -1,7 +1,7 @@
 # TODO: Provide multi-arch image.
 
 # Update-worthy.
-FROM golang:1.25-alpine AS build
+FROM docker.io/golang:1.25-alpine AS build
 
 WORKDIR /usr/src/comkube
 RUN grep '^nobody:' /etc/passwd >passwd
