@@ -16,8 +16,10 @@ test_example() {
   kubectl --namespace="${namespace}" wait --for=condition=Available \
     deployment/greet
 
-  minikube ssh -- curl --fail-with-body "$(kubectl --namespace="${namespace}" \
-    get service/greet --template='{{.spec.clusterIP}}')":8080
+  local -r timeout_in_seconds=30
+  minikube ssh -- curl --fail-with-body --max-time "${timeout_in_seconds}" \
+    "$(kubectl --namespace="${namespace}" get service/greet \
+      --template='{{.spec.clusterIP}}')":8080
 
   kubectl delete namespace "${namespace}"
 }
