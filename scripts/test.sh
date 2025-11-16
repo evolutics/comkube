@@ -3,7 +3,9 @@
 set -o errexit -o nounset -o pipefail
 
 test_example() {
-  minikube start
+  if ! minikube status; then
+    minikube start
+  fi
 
   local -r namespace="${RANDOM}"
   kubectl create namespace "${namespace}"
