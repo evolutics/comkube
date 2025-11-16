@@ -31,7 +31,7 @@ main() {
   golangci-lint run --fix
   go test ./...
 
-  docker build --build-arg "kompose_version=${KOMPOSE_VERSION}" \
+  docker build --build-arg "kompose_version=${KOMPOSE_VERSION}" --load \
     --tag ghcr.io/evolutics/comkube:dirty .
 
   test_example
