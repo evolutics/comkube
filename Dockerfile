@@ -1,6 +1,5 @@
 # Update-worthy.
 FROM --platform="${BUILDPLATFORM}" docker.io/golang:1.25-alpine AS build
-
 WORKDIR /usr/src/comkube
 RUN grep '^nobody:' /etc/passwd >passwd
 COPY go.mod go.sum ./
@@ -23,6 +22,7 @@ ADD \
   /usr/local/bin/
 
 FROM scratch
+
 # See https://github.com/opencontainers/image-spec/blob/main/annotations.md.
 LABEL org.opencontainers.image.authors='Benjamin Fischer'
 LABEL org.opencontainers.image.url='https://github.com/evolutics/comkube'
