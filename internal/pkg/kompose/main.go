@@ -2,6 +2,7 @@ package kompose
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"log"
 	"os/exec"
@@ -9,8 +10,9 @@ import (
 )
 
 type ConversionOptions struct {
-	Namespace string
-	Stdin     io.Reader
+	Namespace             string
+	Stdin                 io.Reader
+	WithKomposeAnnotation bool
 }
 
 func Convert(options ConversionOptions) ([]byte, error) {
@@ -47,7 +49,11 @@ func conversionArguments(options ConversionOptions) []string {
 	if options.Namespace != "" {
 		arguments = append(arguments, "--namespace", options.Namespace)
 	}
-	arguments = append(arguments, "--stdout", "--with-kompose-annotation=false")
+	arguments = append(
+		arguments,
+		"--stdout",
+		fmt.Sprintf("--with-kompose-annotation=%v", options.WithKomposeAnnotation),
+	)
 
 	return arguments
 }

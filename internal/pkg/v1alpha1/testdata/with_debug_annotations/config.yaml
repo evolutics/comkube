@@ -3,7 +3,4 @@ kind: ComposeApp
 metadata:
   name: my-app
 spec:
-  model:
-    services:
-      greet:
-        image: "docker.io/hashicorp/http-echo:1.0"
+  withDebugAnnotations: true

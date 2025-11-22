@@ -13,7 +13,12 @@ import (
 
 type App struct {
 	metav1.ObjectMeta `json:"metadata"`
-	Model             any `json:"model" yaml:"model"`
+	Spec              Spec `json:"spec" yaml:"spec"`
+}
+
+type Spec struct {
+	Model                any  `json:"model" yaml:"model"`
+	WithDebugAnnotations bool `json:"withDebugAnnotations" yaml:"withDebugAnnotations"`
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
@@ -21,8 +26,8 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	// TODO: Give `mounts` hint if Compose file is missing.
 
 	var stdin io.Reader
-	if app.Model != nil {
-		composeModel, err := yaml.Marshal(app.Model)
+	if app.Spec.Model != nil {
+		composeModel, err := yaml.Marshal(app.Spec.Model)
 		if err != nil {
 			return nil, errors.WrapPrefixf(err, "serializing Compose model")
 		}
@@ -31,8 +36,9 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 
 	// TODO: Pass `metadata.namespace` as `--namespace` if given.
 	stdout, err := kompose.Convert(kompose.ConversionOptions{
-		Namespace: app.Namespace,
-		Stdin:     stdin,
+		Namespace:             app.Namespace,
+		Stdin:                 stdin,
+		WithKomposeAnnotation: app.Spec.WithDebugAnnotations,
 	})
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
