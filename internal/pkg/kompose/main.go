@@ -16,7 +16,17 @@ type ConversionOptions struct {
 }
 
 func Convert(options ConversionOptions) ([]byte, error) {
-	// TODO: Support more Kompose options.
+	// TODO: Consider Kompose convert option `--controller`.
+	// TODO: Consider Kompose convert option `--generate-network-policies`.
+	// TODO: Consider Kompose convert option `--profile`.
+	// TODO: Consider Kompose convert option `--pvc-request-size`.
+	// TODO: Consider Kompose convert option `--replicas`.
+	// TODO: Consider Kompose convert option `--secrets-as-files`.
+	// TODO: Consider Kompose convert option `--volumes`.
+	// TODO: Consider Kompose global option `--error-on-warning`.
+	// TODO: Consider Kompose global option `--file`.
+	// TODO: Consider Kompose global option `--provider`.
+	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 
 	command := exec.Command("kompose", conversionArguments(options)...)
 	if options.Stdin != nil {
