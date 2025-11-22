@@ -20,7 +20,12 @@ func Convert(options ConversionOptions) ([]byte, error) {
 		command.Args = append(command.Args, "--file", "-")
 		command.Stdin = options.Stdin
 	}
-	command.Args = append(command.Args, "convert", "--stdout")
+	command.Args = append(
+		command.Args,
+		"convert",
+		"--stdout",
+		"--with-kompose-annotation=false",
+	)
 
 	var stderr strings.Builder
 	command.Stderr = &stderr

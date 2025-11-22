@@ -4,9 +4,6 @@ metadata:
   name: greet
   labels:
     io.kompose.service: greet
-  annotations:
-    kompose.cmd: kompose convert --stdout
-    kompose.version: 1.37.0 (HEAD)
 spec:
   selector:
     io.kompose.service: greet
@@ -21,9 +18,6 @@ metadata:
   name: greet
   labels:
     io.kompose.service: greet
-  annotations:
-    kompose.cmd: kompose convert --stdout
-    kompose.version: 1.37.0 (HEAD)
 spec:
   replicas: 1
   selector:
@@ -33,9 +27,6 @@ spec:
     metadata:
       labels:
         io.kompose.service: greet
-      annotations:
-        kompose.cmd: kompose convert --stdout
-        kompose.version: 1.37.0 (HEAD)
     spec:
       restartPolicy: Always
       containers:
