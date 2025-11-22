@@ -8,13 +8,17 @@ import (
 	"strings"
 )
 
-func Convert(stdin io.Reader) ([]byte, error) {
+type ConversionOptions struct {
+	Stdin io.Reader
+}
+
+func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Support more Kompose options.
 
 	command := exec.Command("kompose")
-	if stdin != nil {
+	if options.Stdin != nil {
 		command.Args = append(command.Args, "--file", "-")
-		command.Stdin = stdin
+		command.Stdin = options.Stdin
 	}
 	command.Args = append(command.Args, "convert", "--stdout")
 

@@ -28,7 +28,9 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	}
 
 	// TODO: Pass `metadata.namespace` as `--namespace` if given.
-	stdout, err := kompose.Convert(stdin)
+	stdout, err := kompose.Convert(kompose.ConversionOptions{
+		Stdin: stdin,
+	})
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
 	}
