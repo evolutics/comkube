@@ -1,13 +1,7 @@
 # Comkube: Deploy Docker Compose Apps on Kubernetes
 
-## Development
-
-```bash
-minikube start
-./comkube.py
-```
-
 ## TODO
 
+- Consider pruning using kubectl ApplySet.
 - Distribute kubectl plugin with Krew.
 - Provide kubectl plugin.

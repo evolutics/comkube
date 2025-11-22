@@ -1,6 +1,0 @@
-[MESSAGES CONTROL]
-
-disable=
-    fixme,
-    missing-function-docstring,
-    missing-module-docstring,
