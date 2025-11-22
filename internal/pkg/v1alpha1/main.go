@@ -15,6 +15,9 @@ type App struct {
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
+	// TODO: Give `envs` hint if required env vars are undefined.
+	// TODO: Give `mounts` hint if Compose file is missing.
+
 	var stdin io.Reader
 	if app.Spec != nil {
 		composeConfig, err := yaml.Marshal(app.Spec)
@@ -24,6 +27,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		stdin = bytes.NewReader(composeConfig)
 	}
 
+	// TODO: Pass `metadata.namespace` as `--namespace` if given.
 	stdout, err := kompose.Convert(stdin)
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
