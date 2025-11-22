@@ -1,11 +1,12 @@
 # Update-worthy.
 FROM --platform="${BUILDPLATFORM}" docker.io/golang:1.25-alpine AS build
+ARG TARGETOS
+ARG TARGETARCH
 WORKDIR /usr/src/comkube
 RUN grep '^nobody:' /etc/passwd >passwd
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-ARG TARGETOS TARGETARCH
 RUN GOOS="${TARGETOS}" GOARCH="${TARGETARCH}" \
   go build -ldflags='-s' -o /usr/local/bin/comkube -v internal/app/main.go
 
@@ -22,6 +23,7 @@ ADD \
   /usr/local/bin/
 
 FROM scratch
+ARG TARGETARCH
 
 # See https://github.com/opencontainers/image-spec/blob/main/annotations.md.
 LABEL org.opencontainers.image.authors='Benjamin Fischer'
@@ -37,10 +39,7 @@ LABEL org.opencontainers.image.description='Deploy Docker Compose apps on Kubern
 COPY --from=build /usr/src/comkube/passwd /etc/passwd
 
 WORKDIR /usr/local/bin
-
-ARG TARGETARCH
 COPY --from=kompose "/usr/local/bin/kompose-linux-${TARGETARCH}" kompose
-
 COPY --from=build /usr/local/bin/comkube .
 ENTRYPOINT ["comkube"]
 
