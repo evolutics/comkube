@@ -3,10 +3,8 @@ package v1alpha1
 import (
 	"bytes"
 	"io"
-	"log"
-	"os/exec"
-	"strings"
 
+	"github.com/evolutics/comkube/internal/pkg/kompose"
 	"sigs.k8s.io/kustomize/kyaml/errors"
 	"sigs.k8s.io/kustomize/kyaml/kio"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
@@ -26,7 +24,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		stdin = bytes.NewReader(composeConfig)
 	}
 
-	stdout, err := convertComposeToK8sWithKompose(stdin)
+	stdout, err := kompose.Convert(stdin)
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
 	}
@@ -37,28 +35,4 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	}
 
 	return append(items, k8sManifests...), nil
-}
-
-func convertComposeToK8sWithKompose(stdin io.Reader) ([]byte, error) {
-	command := exec.Command("kompose")
-	if stdin != nil {
-		command.Args = append(command.Args, "--file", "-")
-		command.Stdin = stdin
-	}
-	command.Args = append(command.Args, "convert", "--stdout")
-
-	var stderr strings.Builder
-	command.Stderr = &stderr
-	var stdout bytes.Buffer
-	command.Stdout = &stdout
-
-	err := command.Run()
-
-	if stderr.Len() != 0 {
-		log.Print(stderr.String())
-	}
-	if err != nil {
-		return nil, err
-	}
-	return stdout.Bytes(), nil
 }
