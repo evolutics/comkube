@@ -2,7 +2,3 @@ apiVersion: comkube.evolutics.info/v1alpha1
 kind: ComposeApp
 metadata:
   name: my-app
-spec:
-  services:
-    greet:
-      image: "docker.io/hashicorp/http-echo:1.0"
