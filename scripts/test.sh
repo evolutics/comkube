@@ -2,6 +2,20 @@
 
 set -o errexit -o nounset -o pipefail
 
+test_image_labels() {
+  local -r title="$(docker image inspect --format \
+    '{{index .Config.Labels "org.opencontainers.image.title"}}' \
+    ghcr.io/evolutics/comkube:dirty)"
+  local -r description="$(docker image inspect --format \
+    '{{index .Config.Labels "org.opencontainers.image.description"}}' \
+    ghcr.io/evolutics/comkube:dirty)"
+
+  if ! grep --ignore-case "^# ${title}: ${description}$" README.md; then
+    echo 'Image labels are inconsistent with readme title.' >&2
+    return 1
+  fi
+}
+
 test_kompose_version_in_image_is_consistent_with_native_env() {
   local -r image_version_line="$(docker run --entrypoint kompose --rm \
     ghcr.io/evolutics/comkube:dirty version)"
@@ -48,6 +62,7 @@ main() {
 
   docker build --load --tag ghcr.io/evolutics/comkube:dirty .
 
+  test_image_labels
   test_kompose_version_in_image_is_consistent_with_native_env
   test_example
 }

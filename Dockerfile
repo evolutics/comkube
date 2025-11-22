@@ -11,6 +11,16 @@ COPY . .
 RUN go build -ldflags='-s' -o /usr/local/bin/comkube -v internal/app/main.go
 
 FROM scratch
+# See https://github.com/opencontainers/image-spec/blob/main/annotations.md.
+LABEL org.opencontainers.image.authors='Benjamin Fischer'
+LABEL org.opencontainers.image.url='https://github.com/evolutics/comkube'
+LABEL org.opencontainers.image.documentation='https://github.com/evolutics/comkube'
+LABEL org.opencontainers.image.source='https://github.com/evolutics/comkube'
+LABEL org.opencontainers.image.version='0.1.0'
+LABEL org.opencontainers.image.vendor='Benjamin Fischer'
+LABEL org.opencontainers.image.licenses='MIT'
+LABEL org.opencontainers.image.title='Comkube'
+LABEL org.opencontainers.image.description='Deploy Docker Compose apps on Kubernetes'
 
 COPY --from=build /usr/src/comkube/passwd /etc/passwd
 
