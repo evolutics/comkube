@@ -13,7 +13,7 @@ import (
 )
 
 type App struct {
-	Spec interface{} `json:"spec" yaml:"spec"`
+	Spec any `json:"spec" yaml:"spec"`
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
