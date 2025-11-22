@@ -14,7 +14,7 @@ import (
 type App struct {
 	metav1.ObjectMeta `json:"metadata"`
 
-	Spec any `json:"spec" yaml:"spec"`
+	Model any `json:"model" yaml:"model"`
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
@@ -22,12 +22,12 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	// TODO: Give `mounts` hint if Compose file is missing.
 
 	var stdin io.Reader
-	if app.Spec != nil {
-		composeConfig, err := yaml.Marshal(app.Spec)
+	if app.Model != nil {
+		composeModel, err := yaml.Marshal(app.Model)
 		if err != nil {
-			return nil, errors.WrapPrefixf(err, "serializing Compose config")
+			return nil, errors.WrapPrefixf(err, "serializing Compose model")
 		}
-		stdin = bytes.NewReader(composeConfig)
+		stdin = bytes.NewReader(composeModel)
 	}
 
 	// TODO: Pass `metadata.namespace` as `--namespace` if given.
