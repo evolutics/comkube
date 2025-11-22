@@ -13,8 +13,7 @@ import (
 
 type App struct {
 	metav1.ObjectMeta `json:"metadata"`
-
-	Model any `json:"model" yaml:"model"`
+	Model             any `json:"model" yaml:"model"`
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
