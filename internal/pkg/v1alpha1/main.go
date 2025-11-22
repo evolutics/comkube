@@ -17,7 +17,7 @@ type App struct {
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
-	var stdin *bytes.Reader
+	var stdin io.Reader
 	if app.Spec != nil {
 		composeConfig, err := yaml.Marshal(app.Spec)
 		if err != nil {
@@ -31,7 +31,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
 	}
 
-	k8sManifests, err := (&kio.ByteReader{Reader: stdout}).Read()
+	k8sManifests, err := kio.FromBytes(stdout)
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "deserializing K8s manifests")
 	}
@@ -39,7 +39,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	return append(items, k8sManifests...), nil
 }
 
-func convertComposeToK8sWithKompose(stdin *bytes.Reader) (io.Reader, error) {
+func convertComposeToK8sWithKompose(stdin io.Reader) ([]byte, error) {
 	command := exec.Command("kompose")
 	if stdin != nil {
 		command.Args = append(command.Args, "--file", "-")
@@ -60,5 +60,5 @@ func convertComposeToK8sWithKompose(stdin *bytes.Reader) (io.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &stdout, nil
+	return stdout.Bytes(), nil
 }
