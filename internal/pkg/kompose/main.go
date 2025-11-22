@@ -15,17 +15,10 @@ type ConversionOptions struct {
 func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Support more Kompose options.
 
-	command := exec.Command("kompose")
+	command := exec.Command("kompose", conversionArguments(options)...)
 	if options.Stdin != nil {
-		command.Args = append(command.Args, "--file", "-")
 		command.Stdin = options.Stdin
 	}
-	command.Args = append(
-		command.Args,
-		"convert",
-		"--stdout",
-		"--with-kompose-annotation=false",
-	)
 
 	var stderr strings.Builder
 	command.Stderr = &stderr
@@ -41,4 +34,20 @@ func Convert(options ConversionOptions) ([]byte, error) {
 		return nil, err
 	}
 	return stdout.Bytes(), nil
+}
+
+func conversionArguments(options ConversionOptions) []string {
+	var arguments []string
+
+	if options.Stdin != nil {
+		arguments = append(arguments, "--file", "-")
+	}
+	arguments = append(
+		arguments,
+		"convert",
+		"--stdout",
+		"--with-kompose-annotation=false",
+	)
+
+	return arguments
 }
