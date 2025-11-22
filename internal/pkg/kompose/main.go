@@ -43,15 +43,11 @@ func conversionArguments(options ConversionOptions) []string {
 	if options.Stdin != nil {
 		arguments = append(arguments, "--file", "-")
 	}
-	arguments = append(
-		arguments,
-		"convert",
-		"--stdout",
-		"--with-kompose-annotation=false",
-	)
+	arguments = append(arguments, "convert")
 	if options.Namespace != "" {
 		arguments = append(arguments, "--namespace", options.Namespace)
 	}
+	arguments = append(arguments, "--stdout", "--with-kompose-annotation=false")
 
 	return arguments
 }
