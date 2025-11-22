@@ -2,6 +2,21 @@
 
 set -o errexit -o nounset -o pipefail
 
+test_kompose_version_in_image_is_consistent_with_native_env() {
+  local -r image_version_line="$(docker run --entrypoint kompose --rm \
+    ghcr.io/evolutics/comkube:dirty version)"
+  local -r native_version_line="$(kompose version)"
+
+  local -r image_version="${image_version_line%% *}"
+  local -r native_version="${native_version_line%% *}"
+
+  if [[ "${image_version}" != "${native_version}" ]]; then
+    echo "Kompose version in image is ${image_version}, \
+which is inconsistent with native version ${native_version}." >&2
+    return 1
+  fi
+}
+
 test_example() {
   if ! minikube status; then
     minikube start
@@ -31,9 +46,9 @@ main() {
   golangci-lint run --fix
   go test ./...
 
-  docker build --build-arg "kompose_version=${KOMPOSE_VERSION}" --load \
-    --tag ghcr.io/evolutics/comkube:dirty .
+  docker build --load --tag ghcr.io/evolutics/comkube:dirty .
 
+  test_kompose_version_in_image_is_consistent_with_native_env
   test_example
 }
 

@@ -26,7 +26,6 @@
 
         shellHook = ''
           export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock";
-          export KOMPOSE_VERSION='${pkgs.kompose.version}';
         '';
       };
     });
