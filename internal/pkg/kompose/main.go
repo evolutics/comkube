@@ -9,7 +9,8 @@ import (
 )
 
 type ConversionOptions struct {
-	Stdin io.Reader
+	Namespace string
+	Stdin     io.Reader
 }
 
 func Convert(options ConversionOptions) ([]byte, error) {
@@ -48,6 +49,9 @@ func conversionArguments(options ConversionOptions) []string {
 		"--stdout",
 		"--with-kompose-annotation=false",
 	)
+	if options.Namespace != "" {
+		arguments = append(arguments, "--namespace", options.Namespace)
+	}
 
 	return arguments
 }

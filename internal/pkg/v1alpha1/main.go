@@ -5,12 +5,15 @@ import (
 	"io"
 
 	"github.com/evolutics/comkube/internal/pkg/kompose"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/kustomize/kyaml/errors"
 	"sigs.k8s.io/kustomize/kyaml/kio"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
 type App struct {
+	metav1.ObjectMeta `json:"metadata"`
+
 	Spec any `json:"spec" yaml:"spec"`
 }
 
@@ -29,7 +32,8 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 
 	// TODO: Pass `metadata.namespace` as `--namespace` if given.
 	stdout, err := kompose.Convert(kompose.ConversionOptions{
-		Stdin: stdin,
+		Namespace: app.Namespace,
+		Stdin:     stdin,
 	})
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
