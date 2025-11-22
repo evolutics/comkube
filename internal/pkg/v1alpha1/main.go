@@ -34,7 +34,6 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		stdin = bytes.NewReader(composeModel)
 	}
 
-	// TODO: Pass `metadata.namespace` as `--namespace` if given.
 	stdout, err := kompose.Convert(kompose.ConversionOptions{
 		Namespace:             app.Namespace,
 		Stdin:                 stdin,
