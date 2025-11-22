@@ -64,6 +64,8 @@ main() {
   test_image_labels "${image}"
   test_kompose_version_in_image_is_consistent_with_native_env "${image}"
   test_example
+
+  docker build --platform linux/amd64,linux/arm64 .
 }
 
 main "$@"
