@@ -18,6 +18,12 @@ which is inconsistent with native version ${native_version}." >&2
 }
 
 test_example() {
+  if ! grep --fixed-strings --line-regexp "        image: $1" \
+    example/k8s-compose-app.yaml; then
+    echo "Example should refer to latest version of image: $1" >&2
+    return 1
+  fi
+
   if ! minikube status; then
     minikube start
   fi
@@ -46,11 +52,14 @@ main() {
   golangci-lint run --fix
   go test ./...
 
-  local -r image='ghcr.io/evolutics/comkube:dirty'
+  local -r latest_git_tag="$(git describe --abbrev=0)"
+  local -r latest_image_tag="${latest_git_tag#v}"
+
+  local -r image="ghcr.io/evolutics/comkube:${latest_image_tag}"
   docker build --load --tag "${image}" .
 
   test_kompose_version_in_image_is_consistent_with_native_env "${image}"
-  test_example
+  test_example "${image}"
 }
 
 main "$@"
