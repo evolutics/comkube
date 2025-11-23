@@ -22,6 +22,7 @@ type Spec struct {
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
+	// TODO: Consider using `metadata.name` as default Compose project name.
 	// TODO: Give `envs` hint if required env vars are undefined.
 	// TODO: Give `mounts` hint if Compose file is missing.
 
