@@ -29,7 +29,7 @@ which is inconsistent with native version ${native_version}." >&2
 
 test_example() {
   if ! grep --fixed-strings --line-regexp "        image: $1" \
-    example/k8s-compose-app.yaml; then
+    example/my-k8s-compose-app.yaml; then
     echo "Example should refer to latest version of image: $1" >&2
     return 1
   fi

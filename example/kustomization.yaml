@@ -1,2 +1,2 @@
 generators:
-  - k8s-compose-app.yaml
+  - my-k8s-compose-app.yaml
