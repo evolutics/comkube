@@ -2,6 +2,16 @@
 
 set -o errexit -o nounset -o pipefail
 
+build_image() {
+  local -r latest_git_tag="$(git describe --abbrev=0)"
+  local -r latest_image_tag="${latest_git_tag#v}"
+
+  local -r image="ghcr.io/evolutics/comkube:${latest_image_tag}"
+  docker build --load --tag "${image}" .
+
+  echo "${image}"
+}
+
 test_kompose_version_in_image_is_consistent_with_native_env() {
   local -r image_version_line="$(docker run --entrypoint kompose --rm "$1" \
     version)"
@@ -52,12 +62,7 @@ main() {
   golangci-lint run --fix
   go test ./...
 
-  local -r latest_git_tag="$(git describe --abbrev=0)"
-  local -r latest_image_tag="${latest_git_tag#v}"
-
-  local -r image="ghcr.io/evolutics/comkube:${latest_image_tag}"
-  docker build --load --tag "${image}" .
-
+  local -r image="$(build_image)"
   test_kompose_version_in_image_is_consistent_with_native_env "${image}"
   test_example "${image}"
 }
