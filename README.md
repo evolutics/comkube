@@ -67,5 +67,6 @@ from then on maintaining those Kubernetes manifests, then use
 
 - Consider pruning using kubectl ApplySet.
 - Distribute kubectl plugin with Krew.
+- Document Podman support.
 - Provide kubectl plugin.
 - Test readme example is kept in sync with files.
