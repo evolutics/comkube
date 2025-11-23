@@ -1,7 +1,7 @@
 apiVersion: comkube.evolutics.info/v1alpha1
 kind: ComposeApp
 metadata:
-  name: dummy # TODO: Consider using name as default Compose project name.
+  name: my-app # TODO: Consider using name as default Compose project name.
   annotations:
     config.kubernetes.io/function: |
       container:
