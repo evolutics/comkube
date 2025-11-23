@@ -1,3 +1,5 @@
+1. Update [changelog](../CHANGELOG.md).
+
 1. Replace old version (e.g., 2.4.1) by new version (e.g, 3.0.0) in code.
 
 1. Commit:
