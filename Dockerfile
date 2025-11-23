@@ -24,23 +24,9 @@ ADD \
 
 FROM scratch
 ARG TARGETARCH
-
-# See https://github.com/opencontainers/image-spec/blob/main/annotations.md.
-LABEL org.opencontainers.image.authors='Benjamin Fischer'
-LABEL org.opencontainers.image.url='https://github.com/evolutics/comkube'
-LABEL org.opencontainers.image.documentation='https://github.com/evolutics/comkube'
-LABEL org.opencontainers.image.source='https://github.com/evolutics/comkube'
-LABEL org.opencontainers.image.version='0.1.0'
-LABEL org.opencontainers.image.vendor='Benjamin Fischer'
-LABEL org.opencontainers.image.licenses='MIT'
-LABEL org.opencontainers.image.title='Comkube'
-LABEL org.opencontainers.image.description='Deploy Docker Compose apps on Kubernetes'
-
 COPY --from=build /usr/src/comkube/passwd /etc/passwd
-
 WORKDIR /usr/local/bin
 COPY --from=kompose "/usr/local/bin/kompose-linux-${TARGETARCH}" kompose
 COPY --from=build /usr/local/bin/comkube .
 ENTRYPOINT ["comkube"]
-
 WORKDIR /srv
