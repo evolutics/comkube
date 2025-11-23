@@ -23,10 +23,11 @@ ADD \
   /usr/local/bin/
 
 FROM scratch
+ARG TARGETOS
 ARG TARGETARCH
 COPY --from=build /usr/src/comkube/passwd /etc/passwd
 WORKDIR /usr/local/bin
-COPY --from=kompose "/usr/local/bin/kompose-linux-${TARGETARCH}" kompose
+COPY --from=kompose "/usr/local/bin/kompose-${TARGETOS}-${TARGETARCH}" kompose
 COPY --from=build /usr/local/bin/comkube .
 ENTRYPOINT ["comkube"]
 WORKDIR /srv
