@@ -1,0 +1,16 @@
+services:
+  foo:
+    image: "docker.io/hashicorp/http-echo:1.0"
+    profiles:
+      - foo
+  bar:
+    image: "docker.io/hashicorp/http-echo:1.0"
+    profiles:
+      - bar
+      - qux
+  baz:
+    image: "docker.io/hashicorp/http-echo:1.0"
+    profiles:
+      - baz
+  qux:
+    image: "docker.io/hashicorp/http-echo:1.0"

@@ -9,6 +9,7 @@ All notable changes to this project are documented here in a format based on
 ### Added
 
 - Support specifying Compose file paths with `spec.composeFiles`.
+- Support specifying Compose profiles with `spec.profiles`.
 
 ### Changed
 

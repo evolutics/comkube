@@ -19,6 +19,7 @@ type App struct {
 type Spec struct {
 	ComposeFileInline    any      `json:"composeFileInline" yaml:"composeFileInline"`
 	ComposeFiles         []string `json:"composeFiles" yaml:"composeFiles"`
+	Profiles             []string `json:"profiles" yaml:"profiles"`
 	WithDebugAnnotations bool     `json:"withDebugAnnotations" yaml:"withDebugAnnotations"`
 }
 
@@ -40,6 +41,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 		ComposeFileInline:     composeFileInline,
 		ComposeFiles:          app.Spec.ComposeFiles,
 		Namespace:             app.Namespace,
+		Profiles:              app.Spec.Profiles,
 		WithKomposeAnnotation: app.Spec.WithDebugAnnotations,
 	})
 	if err != nil {

@@ -13,13 +13,13 @@ type ConversionOptions struct {
 	ComposeFileInline     io.Reader
 	ComposeFiles          []string
 	Namespace             string
+	Profiles              []string
 	WithKomposeAnnotation bool
 }
 
 func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--controller`.
 	// TODO: Consider Kompose convert option `--generate-network-policies`.
-	// TODO: Consider Kompose convert option `--profile`.
 	// TODO: Consider Kompose convert option `--pvc-request-size`.
 	// TODO: Consider Kompose convert option `--replicas`.
 	// TODO: Consider Kompose convert option `--secrets-as-files`.
@@ -64,6 +64,9 @@ func conversionArguments(options ConversionOptions) []string {
 	arguments = append(arguments, "convert")
 	if options.Namespace != "" {
 		arguments = append(arguments, "--namespace", options.Namespace)
+	}
+	for _, profile := range options.Profiles {
+		arguments = append(arguments, "--profile", profile)
 	}
 	arguments = append(
 		arguments,
