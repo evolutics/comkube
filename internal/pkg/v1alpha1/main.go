@@ -17,7 +17,7 @@ type App struct {
 }
 
 type Spec struct {
-	Model                any  `json:"model" yaml:"model"`
+	ComposeFileInline    any  `json:"composeFileInline" yaml:"composeFileInline"`
 	WithDebugAnnotations bool `json:"withDebugAnnotations" yaml:"withDebugAnnotations"`
 }
 
@@ -27,10 +27,10 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	// TODO: Give `mounts` hint if Compose file is missing.
 
 	var composeFileInline io.Reader
-	if app.Spec.Model != nil {
-		rawComposeFileInline, err := yaml.Marshal(app.Spec.Model)
+	if app.Spec.ComposeFileInline != nil {
+		rawComposeFileInline, err := yaml.Marshal(app.Spec.ComposeFileInline)
 		if err != nil {
-			return nil, errors.WrapPrefixf(err, "serializing Compose model")
+			return nil, errors.WrapPrefixf(err, "serializing inline Compose file")
 		}
 		composeFileInline = bytes.NewReader(rawComposeFileInline)
 	}

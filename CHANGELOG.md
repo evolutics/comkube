@@ -6,4 +6,6 @@ All notable changes to this project are documented here in a format based on
 
 ## [Unreleased]
 
-–
+### Changed
+
+- Rename `spec.model` to `spec.composeFileInline` for clarity.
