@@ -26,25 +26,25 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 	// TODO: Give `envs` hint if required env vars are undefined.
 	// TODO: Give `mounts` hint if Compose file is missing.
 
-	var stdin io.Reader
+	var composeFileInline io.Reader
 	if app.Spec.Model != nil {
-		composeModel, err := yaml.Marshal(app.Spec.Model)
+		rawComposeFileInline, err := yaml.Marshal(app.Spec.Model)
 		if err != nil {
 			return nil, errors.WrapPrefixf(err, "serializing Compose model")
 		}
-		stdin = bytes.NewReader(composeModel)
+		composeFileInline = bytes.NewReader(rawComposeFileInline)
 	}
 
-	stdout, err := kompose.Convert(kompose.ConversionOptions{
+	rawK8sManifests, err := kompose.Convert(kompose.ConversionOptions{
+		ComposeFileInline:     composeFileInline,
 		Namespace:             app.Namespace,
-		Stdin:                 stdin,
 		WithKomposeAnnotation: app.Spec.WithDebugAnnotations,
 	})
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "converting with Kompose")
 	}
 
-	k8sManifests, err := kio.FromBytes(stdout)
+	k8sManifests, err := kio.FromBytes(rawK8sManifests)
 	if err != nil {
 		return nil, errors.WrapPrefixf(err, "deserializing K8s manifests")
 	}

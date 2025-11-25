@@ -10,8 +10,8 @@ import (
 )
 
 type ConversionOptions struct {
+	ComposeFileInline     io.Reader
 	Namespace             string
-	Stdin                 io.Reader
 	WithKomposeAnnotation bool
 }
 
@@ -29,8 +29,8 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 
 	command := exec.Command("kompose", conversionArguments(options)...)
-	if options.Stdin != nil {
-		command.Stdin = options.Stdin
+	if options.ComposeFileInline != nil {
+		command.Stdin = options.ComposeFileInline
 	}
 
 	var stderr strings.Builder
@@ -52,7 +52,7 @@ func Convert(options ConversionOptions) ([]byte, error) {
 func conversionArguments(options ConversionOptions) []string {
 	var arguments []string
 
-	if options.Stdin != nil {
+	if options.ComposeFileInline != nil {
 		arguments = append(arguments, "--file", "-")
 	}
 	arguments = append(arguments, "convert")
