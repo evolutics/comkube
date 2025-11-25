@@ -57,6 +57,15 @@ Kubernetes manifests and prints the result (to stdout). Then
 `kubectl apply --filename -` applies these manifests (given on stdin), that is,
 it creates or updates the corresponding Kubernetes objects.
 
+## Config reference
+
+| Field                       | Type            | Meaning                                                                                      |
+| --------------------------- | --------------- | -------------------------------------------------------------------------------------------- |
+| `spec.composeFileInline`    | YAML            | Compose file contents to override default `(docker-)compose.yaml`.                           |
+| `spec.composeFiles`         | String sequence | Compose file paths to override default `(docker-)compose.yaml`.                              |
+| `spec.profiles`             | String sequence | Enabled [profiles](https://github.com/compose-spec/compose-spec/blob/main/spec.md#profiles). |
+| `spec.withDebugAnnotations` | Boolean         | Whether to annotate Kubernetes manifests with optional metadata.                             |
+
 ## Related projects
 
 If you need to convert your Compose files to Kubernetes manifest files once,
