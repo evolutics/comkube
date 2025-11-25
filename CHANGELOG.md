@@ -6,6 +6,10 @@ All notable changes to this project are documented here in a format based on
 
 ## [Unreleased]
 
+–
+
+## [0.2.0] - 2025-11-25
+
 ### Added
 
 - Support specifying Compose file paths with `spec.composeFiles`.
