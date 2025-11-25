@@ -17,8 +17,9 @@ type App struct {
 }
 
 type Spec struct {
-	ComposeFileInline    any  `json:"composeFileInline" yaml:"composeFileInline"`
-	WithDebugAnnotations bool `json:"withDebugAnnotations" yaml:"withDebugAnnotations"`
+	ComposeFileInline    any      `json:"composeFileInline" yaml:"composeFileInline"`
+	ComposeFiles         []string `json:"composeFiles" yaml:"composeFiles"`
+	WithDebugAnnotations bool     `json:"withDebugAnnotations" yaml:"withDebugAnnotations"`
 }
 
 func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
@@ -37,6 +38,7 @@ func (app App) Filter(items []*yaml.RNode) ([]*yaml.RNode, error) {
 
 	rawK8sManifests, err := kompose.Convert(kompose.ConversionOptions{
 		ComposeFileInline:     composeFileInline,
+		ComposeFiles:          app.Spec.ComposeFiles,
 		Namespace:             app.Namespace,
 		WithKomposeAnnotation: app.Spec.WithDebugAnnotations,
 	})

@@ -6,6 +6,10 @@ All notable changes to this project are documented here in a format based on
 
 ## [Unreleased]
 
+### Added
+
+- Support specifying Compose file paths with `spec.composeFiles`.
+
 ### Changed
 
 - Rename `spec.model` to `spec.composeFileInline` for clarity.

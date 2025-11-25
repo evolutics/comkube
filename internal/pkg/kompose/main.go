@@ -11,6 +11,7 @@ import (
 
 type ConversionOptions struct {
 	ComposeFileInline     io.Reader
+	ComposeFiles          []string
 	Namespace             string
 	WithKomposeAnnotation bool
 }
@@ -24,7 +25,6 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--secrets-as-files`.
 	// TODO: Consider Kompose convert option `--volumes`.
 	// TODO: Consider Kompose global option `--error-on-warning`.
-	// TODO: Consider Kompose global option `--file`.
 	// TODO: Consider Kompose global option `--provider`.
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 
@@ -54,6 +54,12 @@ func conversionArguments(options ConversionOptions) []string {
 
 	if options.ComposeFileInline != nil {
 		arguments = append(arguments, "--file", "-")
+	}
+	for _, composeFile := range options.ComposeFiles {
+		if composeFile == "-" {
+			composeFile = "./-"
+		}
+		arguments = append(arguments, "--file", composeFile)
 	}
 	arguments = append(arguments, "convert")
 	if options.Namespace != "" {
