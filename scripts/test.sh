@@ -7,7 +7,7 @@ build_image() {
   local -r latest_image_tag="${latest_git_tag#v}"
 
   local -r image="ghcr.io/evolutics/comkube:${latest_image_tag}"
-  docker build --load --tag "${image}" .
+  docker build --load --pull --tag "${image}" .
 
   echo "${image}"
 }
