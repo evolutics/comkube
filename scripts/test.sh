@@ -27,28 +27,34 @@ which is inconsistent with native version ${native_version}." >&2
   fi
 }
 
-test_example() {
-  if ! grep --fixed-strings --line-regexp "        image: $1" \
-    example/my-k8s-compose-app.yaml; then
-    echo "Example should refer to latest version of image: $1" >&2
-    return 1
-  fi
-
+test_examples() {
   if ! minikube status; then
     minikube start
   fi
 
+  readarray -t example_folders < <(find examples -mindepth 1 -type d)
+  local -r example_folders
+
+  for example_folder in "${example_folders[@]}"; do
+    (
+      cd "${example_folder}"
+      test_example "$1"
+    )
+  done
+}
+
+test_example() {
+  if ! grep --fixed-strings --line-regexp "        image: $1" \
+    my-k8s-compose-app.yaml; then
+    echo "Example should refer to latest version of image: $1" >&2
+    return 1
+  fi
+
   local -r namespace="${RANDOM}"
   kubectl create namespace "${namespace}"
+  kubectl config set-context --current --namespace="${namespace}"
 
-  kubectl kustomize --enable-alpha-plugins example \
-    | kubectl --namespace="${namespace}" apply --filename -
-
-  kubectl --namespace="${namespace}" wait --for=condition=Available \
-    deployment/greet
-
-  minikube ssh -- curl --fail-with-body "$(kubectl --namespace="${namespace}" \
-    get service/greet --template='{{.spec.clusterIP}}')":8080
+  ./test.sh
 
   kubectl delete namespace "${namespace}"
 }
@@ -62,7 +68,7 @@ main() {
 
   local -r image="$(build_image)"
   test_kompose_version_in_image_is_consistent_with_native_env "${image}"
-  test_example "${image}"
+  test_examples "${image}"
 }
 
 main "$@"

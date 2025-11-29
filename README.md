@@ -17,18 +17,19 @@ We assume:
 First, we need the following extra files in the same folder as your
 `compose.yaml`:
 
-1. File [`kustomization.yaml`](example/kustomization.yaml) is the entry point
-   for the kustomize tool, which can generate and transform Kubernetes
-   manifests:
+1. File [`kustomization.yaml`](examples/quick_start/kustomization.yaml) is the
+   entry point for the kustomize tool, which can generate and transform
+   Kubernetes manifests:
 
    ```yaml
    generators:
      - my-k8s-compose-app.yaml
    ```
 
-1. File [`my-k8s-compose-app.yaml`](example/my-k8s-compose-app.yaml) is the
-   bridge to your `compose.yaml`; it tells kustomize to use the plugin Comkube
-   (run in a container):
+1. File
+   [`my-k8s-compose-app.yaml`](examples/quick_start/my-k8s-compose-app.yaml) is
+   the bridge to your `compose.yaml`; it tells kustomize to use the plugin
+   Comkube (run in a container):
 
    ```yaml
    apiVersion: comkube.evolutics.info/v1alpha1
