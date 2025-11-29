@@ -25,7 +25,6 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--secrets-as-files`.
 	// TODO: Consider Kompose convert option `--volumes`.
 	// TODO: Consider Kompose global option `--error-on-warning`.
-	// TODO: Consider Kompose global option `--provider`.
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 
 	command := exec.Command("kompose", conversionArguments(options)...)
