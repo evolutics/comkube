@@ -2,7 +2,7 @@
 
 set -o errexit -o nounset -o pipefail
 
-kubectl kustomize --enable-alpha-plugins . | kubectl apply --filename -
+kubectl kustomize --enable-alpha-plugins . | kubectl apply --filename=-
 
 kubectl wait --for=condition=Available deployment/greet
 

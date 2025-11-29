@@ -50,12 +50,12 @@ That's it. Now you are ready to deploy your Compose app to Kubernetes for real:
 
 ```bash
 cd folder/with/above/files/
-kubectl kustomize --enable-alpha-plugins . | kubectl apply --filename -
+kubectl kustomize --enable-alpha-plugins . | kubectl apply --filename=-
 ```
 
 `kubectl kustomize --enable-alpha-plugins .` converts your Compose file into
 Kubernetes manifests and prints the result (to stdout). Then
-`kubectl apply --filename -` applies these manifests (given on stdin), that is,
+`kubectl apply --filename=-` applies these manifests (given on stdin), that is,
 it creates or updates the corresponding Kubernetes objects.
 
 ## Config reference
