@@ -21,7 +21,6 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--controller`.
 	// TODO: Consider Kompose convert option `--generate-network-policies`.
 	// TODO: Consider Kompose convert option `--pvc-request-size`.
-	// TODO: Consider Kompose convert option `--replicas`.
 	// TODO: Consider Kompose convert option `--secrets-as-files`.
 	// TODO: Consider Kompose convert option `--volumes`.
 	// TODO: Consider Kompose global option `--error-on-warning`.
