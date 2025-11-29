@@ -2,14 +2,22 @@
 
 set -o errexit -o nounset -o pipefail
 
-build_image() {
+get_latest_image_reference() {
   local -r latest_git_tag="$(git describe --abbrev=0)"
   local -r latest_image_tag="${latest_git_tag#v}"
+  echo "ghcr.io/evolutics/comkube:${latest_image_tag}"
+}
 
-  local -r image="ghcr.io/evolutics/comkube:${latest_image_tag}"
-  docker build --load --pull --tag "${image}" .
+test_image_references_are_up_to_date() {
+  git grep --extended-regexp -h --only-matching \
+    'ghcr\.io/evolutics/comkube:[-._[:alnum:]]+' \
+    | sort --unique \
+    | diff --label 'Actual image references' \
+      --label 'Expected image reference' --unified - <(echo "$1")
+}
 
-  echo "${image}"
+build_image() {
+  docker build --load --pull --tag "$1" .
 }
 
 test_kompose_version_in_image_is_consistent_with_native_env() {
@@ -44,12 +52,6 @@ test_examples() {
 }
 
 test_example() {
-  if ! grep --fixed-strings --line-regexp "        image: $1" \
-    my-k8s-compose-app.yaml; then
-    echo "Example should refer to latest version of image: $1" >&2
-    return 1
-  fi
-
   local -r namespace="${RANDOM}"
   kubectl create namespace "${namespace}"
   kubectl config set-context --current --namespace="${namespace}"
@@ -66,7 +68,9 @@ main() {
   golangci-lint run --fix
   go test ./...
 
-  local -r image="$(build_image)"
+  local -r image="$(get_latest_image_reference)"
+  test_image_references_are_up_to_date "${image}"
+  build_image "${image}"
   test_kompose_version_in_image_is_consistent_with_native_env "${image}"
   test_examples "${image}"
 }
