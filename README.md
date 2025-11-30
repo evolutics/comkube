@@ -2,12 +2,16 @@
 
 Keep your Compose files but deploy them on Kubernetes.
 
+In a hurry? Skip to [quick start](#quick-start)!
+
 ## Prerequisites
 
 - Docker
 - kubectl (includes kustomize)
 
 ## Usage
+
+### Quick start
 
 We assume:
 
@@ -56,6 +60,45 @@ kubectl kustomize --enable-alpha-plugins . | kubectl apply --filename=-
 Kubernetes manifests and prints the result (to stdout). Then
 `kubectl apply --filename=-` applies these manifests (given on stdin), that is,
 it creates or updates the corresponding Kubernetes objects.
+
+### Container environment config
+
+For security reasons,
+[kustomize recommends](https://kubectl.docs.kubernetes.io/guides/extending_kustomize/)
+running plugins in a container; we do the same with Comkube.
+
+This implies that files and environment variables your Compose config depends on
+must be provided to the container:
+
+- **Files** like `compose.yaml` and `.env` files, if any, must be mounted
+  – either individually or by mounting whole folders.
+
+  Comkube's working folder is `/srv/`. Note that mounts are read-only by
+  default.
+
+- **Environment variables** that kustomize should pass from your host
+  environment to the container must be named.
+
+The following demonstrates this (see
+[full example](examples/container_environment_config)):
+
+```yaml
+apiVersion: comkube.evolutics.info/v1alpha1
+kind: ComposeApp
+metadata:
+  name: my-app
+  annotations:
+    config.kubernetes.io/function: |
+      container:
+        image: ghcr.io/evolutics/comkube:0.2.0
+        mounts:
+          - type: bind
+            src: my_config/
+            dst: /srv/
+        envs:
+           - MY_GREETING
+           - MY_NAME
+```
 
 ## Config reference
 

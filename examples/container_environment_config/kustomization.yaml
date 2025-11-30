@@ -1,0 +1,2 @@
+generators:
+  - my-k8s-compose-app.yaml

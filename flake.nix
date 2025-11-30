@@ -21,6 +21,7 @@
             go
             golangci-lint
             kompose
+            prettier
           ])
           ++ [travel-kit.packages.${system}.default];
 

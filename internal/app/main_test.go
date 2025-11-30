@@ -21,6 +21,7 @@ func TestReadmeHasUpToDateFiles(test *testing.T) {
 	}{
 		{"../../examples/basic/kustomization.yaml", 3},
 		{"../../examples/basic/my-k8s-compose-app.yaml", 3},
+		{"../../examples/container_environment_config/my-k8s-compose-app.yaml", 0},
 	} {
 		contents, err := os.ReadFile(check.file)
 		if err != nil {
