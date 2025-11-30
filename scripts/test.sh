@@ -40,7 +40,8 @@ test_examples() {
     minikube start
   fi
 
-  readarray -t example_folders < <(find examples -mindepth 1 -type d)
+  readarray -t example_folders < \
+    <(find examples -maxdepth 1 -mindepth 1 -type d)
 
   for example_folder in "${example_folders[@]}"; do
     (
