@@ -122,6 +122,12 @@ If you need to convert your Compose files to Kubernetes manifest files once,
 from then on maintaining those Kubernetes manifests, then use
 [Kompose](https://kompose.io) directly.
 
+Alternatively, apply the conversion results on the fly like so:
+
+```bash
+kompose convert --stdout | kubectl apply --filename=-
+```
+
 ## TODO
 
 - Consider pruning using kubectl ApplySet.
