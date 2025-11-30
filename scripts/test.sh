@@ -46,7 +46,7 @@ test_examples() {
   for example_folder in "${example_folders[@]}"; do
     (
       cd "${example_folder}"
-      test_example "$1"
+      test_example
     )
   done
 }
