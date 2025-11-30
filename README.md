@@ -2,7 +2,7 @@
 
 Keep your Compose files but deploy them on Kubernetes.
 
-In a hurry? Skip to [quick start](#quick-start)!
+In a hurry? Jump to [quick start](#quick-start)!
 
 ## Prerequisites
 
