@@ -41,7 +41,7 @@ test_examples() {
   fi
 
   readarray -t example_folders < \
-    <(find examples -maxdepth 1 -mindepth 1 -type d)
+    <(find examples -maxdepth 1 -mindepth 1 -type d | sort)
 
   for example_folder in "${example_folders[@]}"; do
     (
