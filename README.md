@@ -125,6 +125,4 @@ from then on maintaining those Kubernetes manifests, then use
 ## TODO
 
 - Consider pruning using kubectl ApplySet.
-- Distribute kubectl plugin with Krew.
 - Document Podman support.
-- Provide kubectl plugin.
