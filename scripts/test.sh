@@ -41,7 +41,6 @@ test_examples() {
   fi
 
   readarray -t example_folders < <(find examples -mindepth 1 -type d)
-  local -r example_folders
 
   for example_folder in "${example_folders[@]}"; do
     (
