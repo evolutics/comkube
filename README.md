@@ -1,8 +1,13 @@
 # Comkube: Deploy Docker Compose Apps on Kubernetes
 
+In a hurry? Jump to [quick start](#quick-start)!
+
+## Motivation
+
 Keep your Compose files but deploy them on Kubernetes.
 
-In a hurry? Jump to [quick start](#quick-start)!
+The conversion happens on the fly with [Kompose](https://kompose.io), providing
+you with its flexibility to fine-tune as needed.
 
 ## Prerequisites
 
@@ -113,7 +118,7 @@ metadata:
 
 If you need to convert your Compose files to Kubernetes manifest files once,
 from then on maintaining those Kubernetes manifests, then use
-[Kompose](https://kompose.io) directly. Comkube uses Kompose underneath.
+[Kompose](https://kompose.io) directly.
 
 ## TODO
 
