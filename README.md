@@ -11,6 +11,8 @@ you with its flexibility to fine-tune as needed.
 
 ## Prerequisites
 
+Comkube is distributed as a container image, so the only requirements are these:
+
 - Docker
 - kubectl (includes kustomize)
 
