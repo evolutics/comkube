@@ -42,7 +42,7 @@ First, we need the following extra files in the same folder as your
      annotations:
        config.kubernetes.io/function: |
          container:
-           image: ghcr.io/evolutics/comkube:0.2.0
+           image: "ghcr.io/evolutics/comkube:0.2.0"
            mounts:
              - type: bind
                src: compose.yaml
@@ -90,7 +90,7 @@ metadata:
   annotations:
     config.kubernetes.io/function: |
       container:
-        image: ghcr.io/evolutics/comkube:0.2.0
+        image: "ghcr.io/evolutics/comkube:0.2.0"
         mounts:
           - type: bind
             src: my_config/
