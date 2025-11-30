@@ -16,8 +16,8 @@ func TestReadmeHasUpToDateFiles(test *testing.T) {
 	readme := string(rawReadme)
 
 	for _, file := range []string{
-		"../../examples/quick_start/kustomization.yaml",
-		"../../examples/quick_start/my-k8s-compose-app.yaml",
+		"../../examples/basic/kustomization.yaml",
+		"../../examples/basic/my-k8s-compose-app.yaml",
 	} {
 		contents, err := os.ReadFile(file)
 		if err != nil {
