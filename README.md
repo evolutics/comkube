@@ -21,6 +21,13 @@ kubectl
 go install github.com/evolutics/comkube@latest
 ```
 
+To use Comkube as a kubectl plugin, move the `comkube` executable to anywhere on
+your `$PATH` under the name `kubectl-comkube`. Example:
+
+```bash
+sudo mv comkube /usr/local/bin/kubectl-comkube
+```
+
 TODO: Pre-built executables are coming soon.
 
 ## Usage
