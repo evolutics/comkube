@@ -10,4 +10,9 @@ go test ./...
 
 go install
 mv "${GOBIN}/comkube" "${GOBIN}/kubectl-comkube"
+
+if ! minikube status; then
+  minikube start
+fi
+
 kubectl kuttl test
