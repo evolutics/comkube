@@ -27,5 +27,3 @@
    ```bash
    git push --atomic origin main v3.0.0
    ```
-
-1. Check [image release](https://github.com/evolutics/comkube/actions).

@@ -1,8 +1,0 @@
-apiVersion: comkube.evolutics.info/v1alpha1
-kind: ComposeApp
-metadata:
-  name: my-app
-spec:
-  profiles:
-    - foo
-    - bar

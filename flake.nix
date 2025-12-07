@@ -20,13 +20,14 @@
           (with pkgs; [
             go
             golangci-lint
-            kompose
+            kuttl
             prettier
           ])
           ++ [travel-kit.packages.${system}.default];
 
         shellHook = ''
-          export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock";
+          export GOBIN="$PWD/bin";
+          export PATH="$GOBIN:$PATH";
         '';
       };
     });

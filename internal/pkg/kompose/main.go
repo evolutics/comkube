@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
-	"os/exec"
-	"strings"
+	"os"
+
+	"github.com/kubernetes/kompose/cmd"
 )
 
 type ConversionOptions struct {
-	ComposeFileInline     io.Reader
-	ComposeFiles          []string
+	Files                 []string
 	Namespace             string
 	Profiles              []string
 	WithKomposeAnnotation bool
@@ -25,39 +24,22 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--volumes`.
 	// TODO: Consider Kompose global option `--error-on-warning`.
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
+	// TODO: Test that Compose file contents can be given on stdin.
 
-	command := exec.Command("kompose", conversionArguments(options)...)
-	if options.ComposeFileInline != nil {
-		command.Stdin = options.ComposeFileInline
-	}
+	os.Args = append([]string{"kompose"}, conversionArguments(options)...)
+	return captureStdout(cmd.Execute)
+}
 
-	var stderr strings.Builder
-	command.Stderr = &stderr
-	var stdout bytes.Buffer
-	command.Stdout = &stdout
-
-	err := command.Run()
-
-	if stderr.Len() != 0 {
-		log.Print(stderr.String())
-	}
-	if err != nil {
-		return nil, err
-	}
-	return stdout.Bytes(), nil
+type result[T any] struct {
+	value T
+	err   error
 }
 
 func conversionArguments(options ConversionOptions) []string {
 	var arguments []string
 
-	if options.ComposeFileInline != nil {
-		arguments = append(arguments, "--file", "-")
-	}
-	for _, composeFile := range options.ComposeFiles {
-		if composeFile == "-" {
-			composeFile = "./-"
-		}
-		arguments = append(arguments, "--file", composeFile)
+	for _, file := range options.Files {
+		arguments = append(arguments, "--file", file)
 	}
 	arguments = append(arguments, "convert")
 	if options.Namespace != "" {
@@ -73,4 +55,42 @@ func conversionArguments(options ConversionOptions) []string {
 	)
 
 	return arguments
+}
+
+// captureStdout is not thread-safe.
+func captureStdout(run func() error) ([]byte, error) {
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		return nil, fmt.Errorf("opening pipe: %w", err)
+	}
+
+	originalStdout := os.Stdout
+	defer func() { os.Stdout = originalStdout }()
+	os.Stdout = writer
+
+	channel := make(chan result[[]byte])
+
+	go func() {
+		var buffer bytes.Buffer
+		_, err := io.Copy(&buffer, reader)
+		if err != nil {
+			channel <- result[[]byte]{err: fmt.Errorf("copying from reader: %w", err)}
+			return
+		}
+		channel <- result[[]byte]{value: buffer.Bytes()}
+	}()
+
+	runErr := run()
+
+	err = writer.Close()
+	runStdout := <-channel
+
+	if runErr != nil {
+		return nil, runErr
+	}
+	if err != nil {
+		return nil, fmt.Errorf("closing writer: %w", err)
+	}
+
+	return runStdout.value, runStdout.err
 }

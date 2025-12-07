@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qux

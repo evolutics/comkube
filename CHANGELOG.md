@@ -6,7 +6,9 @@ All notable changes to this project are documented here in a format based on
 
 ## [Unreleased]
 
-–
+### Changed
+
+- Switch design from container kustomize plugin to convenient kubectl plugin.
 
 ## [0.2.0] - 2025-11-25
 

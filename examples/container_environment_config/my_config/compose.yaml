@@ -1,6 +1,0 @@
-services:
-  greet:
-    image: "docker.io/hashicorp/http-echo:1.0"
-    command: ["-listen=:8181", "-text=${MY_GREETING}, ${MY_NAME}"]
-    ports:
-      - "127.0.0.1:${MY_PORT}:8181"

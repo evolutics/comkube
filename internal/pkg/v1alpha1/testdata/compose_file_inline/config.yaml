@@ -1,9 +1,0 @@
-apiVersion: comkube.evolutics.info/v1alpha1
-kind: ComposeApp
-metadata:
-  name: my-app
-spec:
-  composeFileInline:
-    services:
-      greet:
-        image: "docker.io/hashicorp/http-echo:1.0"
