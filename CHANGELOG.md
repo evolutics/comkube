@@ -6,7 +6,9 @@ All notable changes to this project are documented here in a format based on
 
 ## [Unreleased]
 
-–
+### Added
+
+- Support CLI option `-f` as alias for `--file`.
 
 ## [0.3.0] - 2025-12-07
 

@@ -21,8 +21,9 @@ func Main(arguments []string) error {
 
 		Flags: []cli.Flag{
 			&cli.StringSliceFlag{
-				Name:  "file",
-				Usage: "Compose config files",
+				Name:    "file",
+				Aliases: []string{"f"},
+				Usage:   "Compose config files",
 			},
 			&cli.StringSliceFlag{
 				Name:  "profile",
