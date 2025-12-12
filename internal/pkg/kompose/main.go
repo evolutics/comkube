@@ -8,14 +8,14 @@ import (
 	"github.com/kubernetes/kompose/cmd"
 )
 
-type ConversionOptions struct {
+type ConvertOptions struct {
 	Files                 []string
 	Namespace             string
 	Profiles              []string
 	WithKomposeAnnotation bool
 }
 
-func Convert(options ConversionOptions) ([]byte, error) {
+func Convert(options ConvertOptions) ([]byte, error) {
 	// TODO: Consider Kompose convert option `--controller`.
 	// TODO: Consider Kompose convert option `--generate-network-policies`.
 	// TODO: Consider Kompose convert option `--pvc-request-size`.
@@ -25,7 +25,7 @@ func Convert(options ConversionOptions) ([]byte, error) {
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 	// TODO: Test that Compose file contents can be given on stdin.
 
-	os.Args = append([]string{"kompose"}, conversionArguments(options)...)
+	os.Args = append([]string{"kompose"}, convertArguments(options)...)
 	return captureStdout(cmd.Execute)
 }
 
@@ -34,7 +34,7 @@ type result[T any] struct {
 	err   error
 }
 
-func conversionArguments(options ConversionOptions) []string {
+func convertArguments(options ConvertOptions) []string {
 	var arguments []string
 
 	for _, file := range options.Files {

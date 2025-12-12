@@ -16,7 +16,7 @@ type upOptions struct {
 }
 
 func up(options upOptions) error {
-	k8sManifests, err := kompose.Convert(kompose.ConversionOptions{
+	k8sManifests, err := kompose.Convert(kompose.ConvertOptions{
 		Files:                 options.Files,
 		Namespace:             options.Namespace,
 		Profiles:              options.Profiles,
