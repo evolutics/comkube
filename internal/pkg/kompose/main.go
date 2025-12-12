@@ -1,7 +1,6 @@
 package kompose
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -71,13 +70,12 @@ func captureStdout(run func() error) ([]byte, error) {
 	channel := make(chan result[[]byte])
 
 	go func() {
-		var buffer bytes.Buffer
-		_, err := io.Copy(&buffer, reader)
+		stdout, err := io.ReadAll(reader)
 		if err != nil {
 			channel <- result[[]byte]{err: fmt.Errorf("copying from reader: %w", err)}
 			return
 		}
-		channel <- result[[]byte]{value: buffer.Bytes()}
+		channel <- result[[]byte]{value: stdout}
 	}()
 
 	runErr := run()
