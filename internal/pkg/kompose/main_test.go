@@ -1,12 +1,13 @@
 package kompose
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"testing"
 )
 
-func TestCaptureStdout(test *testing.T) {
+func TestCaptureStdoutOK(test *testing.T) {
 	fmt.Println("Before")
 	stdout, err := captureStdout(func() error {
 		fmt.Println("Hello")
@@ -27,5 +28,14 @@ func TestCaptureStdout(test *testing.T) {
 	}
 	if string(stdout) != "Hello\nworld\n" {
 		test.Errorf("stdout: %q", stdout)
+	}
+}
+
+func TestCaptureStdoutError(test *testing.T) {
+	expectedErr := errors.New("test")
+	_, actualErr := captureStdout(func() error { return expectedErr })
+
+	if actualErr != expectedErr {
+		test.Errorf("got %q, want %q", actualErr, expectedErr)
 	}
 }
