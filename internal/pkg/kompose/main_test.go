@@ -35,7 +35,7 @@ func TestCaptureStdoutError(test *testing.T) {
 	expectedErr := errors.New("test")
 	_, actualErr := captureStdout(func() error { return expectedErr })
 
-	if actualErr != expectedErr {
+	if !errors.Is(actualErr, expectedErr) {
 		test.Errorf("got %q, want %q", actualErr, expectedErr)
 	}
 }

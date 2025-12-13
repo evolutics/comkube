@@ -93,11 +93,9 @@ func captureStdout(run func() error) ([]byte, error) {
 		errs = append(errs, err)
 	}
 
-	if len(errs) == 1 {
-		return nil, errs[0]
-	}
-	if len(errs) != 0 {
-		return nil, errors.Join(errs...)
+	err = errors.Join(errs...)
+	if err != nil {
+		return nil, err
 	}
 	return stdout, nil
 }
