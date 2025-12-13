@@ -25,7 +25,9 @@ func Convert(options ConvertOptions) ([]byte, error) {
 	// TODO: Consider Kompose global options `--suppress-warnings`, `--verbose`.
 	// TODO: Test that Compose file contents can be given on stdin.
 
+	originalOsArgs := os.Args
 	os.Args = append([]string{"kompose"}, convertArguments(options)...)
+	defer func() { os.Args = originalOsArgs }()
 	return captureStdout(cmd.Execute)
 }
 
