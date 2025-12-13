@@ -27,7 +27,7 @@ func TestCaptureStdoutOK(test *testing.T) {
 		test.Error(err)
 	}
 	if string(stdout) != "Hello\nworld\n" {
-		test.Errorf("stdout: %q", stdout)
+		test.Errorf("got %q", stdout)
 	}
 }
 
