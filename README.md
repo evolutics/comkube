@@ -35,7 +35,7 @@ TODO: Pre-built executables are coming soon.
 ### Quick start
 
 ```bash
-kubectl comkube up
+kubectl comkube apply
 ```
 
 ## Related projects

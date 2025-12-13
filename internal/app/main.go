@@ -33,7 +33,7 @@ func Main(arguments []string) error {
 
 		Commands: []*cli.Command{
 			{
-				Name:  "up",
+				Name:  "apply",
 				Usage: "Apply Compose config to Kubernetes",
 				Flags: []cli.Flag{
 					&cli.StringFlag{ // TODO: Consider support on upper level.
@@ -47,7 +47,7 @@ func Main(arguments []string) error {
 					},
 				},
 				Action: func(_ context.Context, command *cli.Command) error {
-					return up(upOptions{
+					return apply(applyOptions{
 						Files:                command.StringSlice("file"),
 						Namespace:            command.String("namespace"),
 						Profiles:             command.StringSlice("profile"),

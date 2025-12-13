@@ -1,5 +1,5 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  - command: kubectl comkube --file=foo.yaml -f=bar.yaml up
+  - command: kubectl comkube --file=foo.yaml -f=bar.yaml apply
     namespaced: true

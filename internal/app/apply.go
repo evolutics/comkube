@@ -8,14 +8,14 @@ import (
 	"github.com/evolutics/comkube/internal/pkg/kubectl"
 )
 
-type upOptions struct {
+type applyOptions struct {
 	Files                []string
 	Namespace            string
 	Profiles             []string
 	WithDebugAnnotations bool
 }
 
-func up(options upOptions) error {
+func apply(options applyOptions) error {
 	k8sManifests, err := kompose.Convert(kompose.ConvertOptions{
 		Files:                 options.Files,
 		Namespace:             options.Namespace,

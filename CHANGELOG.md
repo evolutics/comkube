@@ -10,6 +10,10 @@ All notable changes to this project are documented here in a format based on
 
 - Support CLI option `-f` as alias for `--file`.
 
+### Changed
+
+- Rename CLI subcommand `up` to `apply` as more suitable.
+
 ## [0.3.0] - 2025-12-07
 
 ### Changed
