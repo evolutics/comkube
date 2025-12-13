@@ -1,6 +1,7 @@
 package kompose
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -29,11 +30,6 @@ func Convert(options ConvertOptions) ([]byte, error) {
 	os.Args = append([]string{"kompose"}, convertArguments(options)...)
 	defer func() { os.Args = originalOsArgs }()
 	return captureStdout(cmd.Execute)
-}
-
-type result[T any] struct {
-	value T
-	err   error
 }
 
 func convertArguments(options ConvertOptions) []string {
@@ -65,32 +61,43 @@ func captureStdout(run func() error) ([]byte, error) {
 		return nil, fmt.Errorf("opening pipe: %w", err)
 	}
 
-	originalStdout := os.Stdout
-	defer func() { os.Stdout = originalStdout }()
-	os.Stdout = writer
-
-	channel := make(chan result[[]byte])
+	errorChannel := make(chan error, 1)
 
 	go func() {
-		stdout, err := io.ReadAll(reader)
+		defer func() { close(errorChannel) }()
+		defer func() {
+			err := writer.Close()
+			if err != nil {
+				errorChannel <- fmt.Errorf("closing writer: %w", err)
+			}
+		}()
+
+		originalStdout := os.Stdout
+		defer func() { os.Stdout = originalStdout }()
+		os.Stdout = writer
+
+		err := run()
 		if err != nil {
-			channel <- result[[]byte]{err: fmt.Errorf("reading pipe: %w", err)}
-			return
+			errorChannel <- err
 		}
-		channel <- result[[]byte]{value: stdout}
 	}()
 
-	runErr := run()
+	var errs []error
 
-	err = writer.Close()
-	runStdout := <-channel
-
-	if runErr != nil {
-		return nil, runErr
-	}
+	stdout, err := io.ReadAll(reader)
 	if err != nil {
-		return nil, fmt.Errorf("closing writer: %w", err)
+		errs = append(errs, fmt.Errorf("reading pipe: %w", err))
 	}
 
-	return runStdout.value, runStdout.err
+	for err := range errorChannel {
+		errs = append(errs, err)
+	}
+
+	if len(errs) == 1 {
+		return nil, errs[0]
+	}
+	if len(errs) != 0 {
+		return nil, errors.Join(errs...)
+	}
+	return stdout, nil
 }
