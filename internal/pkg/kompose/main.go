@@ -74,7 +74,7 @@ func captureStdout(run func() error) ([]byte, error) {
 	go func() {
 		stdout, err := io.ReadAll(reader)
 		if err != nil {
-			channel <- result[[]byte]{err: fmt.Errorf("copying from reader: %w", err)}
+			channel <- result[[]byte]{err: fmt.Errorf("reading pipe: %w", err)}
 			return
 		}
 		channel <- result[[]byte]{value: stdout}
